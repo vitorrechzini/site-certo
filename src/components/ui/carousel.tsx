@@ -203,7 +203,7 @@ CarouselItem.displayName = "CarouselItem"
 const CarouselPrevious = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
->(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+>(({ className, variant = "ghost", size = "icon", ...props }, ref) => {
   const { scrollPrev, canScrollPrev, onPrevClick } = useCarousel()
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -219,15 +219,14 @@ const CarouselPrevious = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute h-8 w-8 rounded-full",
-        "h-10 w-10 bg-white/20 hover:bg-white/30 border-none text-white left-2 top-1/2 -translate-y-1/2",
+        "absolute h-10 w-10 bg-transparent hover:bg-transparent border-none text-white left-[-50px] top-1/2 -translate-y-1/2",
         className
       )}
       disabled={!canScrollPrev}
       onClick={handleClick}
       {...props}
     >
-      <ArrowLeft className="h-4 w-4" />
+      <ArrowLeft className="h-8 w-8" />
       <span className="sr-only">Previous slide</span>
     </Button>
   )
@@ -237,7 +236,7 @@ CarouselPrevious.displayName = "CarouselPrevious"
 const CarouselNext = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
->(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+>(({ className, variant = "ghost", size = "icon", ...props }, ref) => {
   const { scrollNext, canScrollNext, onNextClick } = useCarousel()
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -253,15 +252,14 @@ const CarouselNext = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute h-8 w-8 rounded-full",
-        "h-10 w-10 bg-white/20 hover:bg-white/30 border-none text-white right-2 top-1/2 -translate-y-1/2",
+        "absolute h-10 w-10 bg-transparent hover:bg-transparent border-none text-white right-[-50px] top-1/2 -translate-y-1/2",
         className
       )}
       disabled={!canScrollNext}
       onClick={handleClick}
       {...props}
     >
-      <ArrowRight className="h-4 w-4" />
+      <ArrowRight className="h-8 w-8" />
       <span className="sr-only">Next slide</span>
     </Button>
   )
