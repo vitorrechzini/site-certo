@@ -1,19 +1,32 @@
 "use client";
 
 import { useState } from 'react';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import {CheckIcon} from 'lucide-react';
+import { CheckIcon, Star } from 'lucide-react';
 
 const plans = [
-  { id: 'vitalicio', name: '👑 ACESSO VITALÍCIO', price: 'R$ 47,00', save: 'Economize R$ 250,00', features: ['Acesso a todo conteúdo', 'Atualizações diárias', 'Suporte VIP'] },
-  { id: 'mensal', name: '⭐ ACESSO MENSAL', price: 'R$ 29,90', save: 'Economize R$ 119,00', features: ['Acesso a todo conteúdo', 'Atualizações diárias'] },
+  { 
+    id: 'anual', 
+    name: 'ASSINATURA ANUAL', 
+    price: 'R$ 27,00',
+    period: 'por mês',
+    features: ['+1.500 Packs e Modelos', 'Acesso por 12 meses', 'Suporte via WhatsApp', 'Atualizações Gratuitas'],
+    highlight: false,
+  },
+  { 
+    id: 'vitalicio', 
+    name: 'PLANO VITALÍCIO', 
+    price: '12x de R$ 9,74',
+    altPrice: 'ou R$ 97,00 à vista',
+    features: ['Acesso para sempre', 'Atualizações diárias', 'Suporte VIP', 'Bônus Exclusivos'],
+    highlight: true,
+    tag: 'MAIS VENDIDO'
+  },
 ];
 
 export default function Plans() {
-  const [selectedPlan, setSelectedPlan] = useState(plans[0].id);
+  const [selectedPlan, setSelectedPlan] = useState('vitalicio');
 
   return (
     <section className="w-full bg-primary py-12 px-4">
@@ -21,42 +34,46 @@ export default function Plans() {
         <h2 className="text-3xl font-bold text-primary-foreground font-headline">ESCOLHA SEU PLANO</h2>
         <p className="text-primary-foreground/80">e tenha acesso imediato a todo o conteúdo.</p>
       </div>
-      <RadioGroup value={selectedPlan} onValueChange={setSelectedPlan} className="space-y-6 max-w-md mx-auto">
+      <div className="flex flex-col md:flex-row gap-8 justify-center items-center max-w-4xl mx-auto">
         {plans.map((plan) => (
-          <Label
+          <div
             key={plan.id}
-            htmlFor={plan.id}
+            onClick={() => setSelectedPlan(plan.id)}
             className={cn(
-              "flex flex-col p-6 rounded-2xl border-2 cursor-pointer transition-all bg-card shadow-lg",
-              selectedPlan === plan.id ? 'border-primary-foreground ring-2 ring-primary-foreground' : 'border-card'
+              "bg-card text-card-foreground rounded-2xl p-6 w-full max-w-sm cursor-pointer border-2 transition-all shadow-lg relative",
+              selectedPlan === plan.id ? 'border-accent ring-2 ring-accent' : 'border-transparent'
             )}
           >
-            <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                    <RadioGroupItem value={plan.id} id={plan.id} className="h-6 w-6 text-primary-foreground border-muted checked:bg-primary-foreground checked:text-card" />
-                    <span className="ml-4 font-bold text-xl text-card-foreground">{plan.name}</span>
+            {plan.tag && (
+                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent text-accent-foreground px-4 py-1 rounded-full text-sm font-bold">
+                    {plan.tag}
                 </div>
-                <div className="text-right">
-                    <p className="text-3xl font-bold text-card-foreground">{plan.price}</p>
-                    <p className="text-sm text-green-400">{plan.save}</p>
-                </div>
+            )}
+            <div className="text-center">
+                <h3 className="text-2xl font-bold font-headline">{plan.name}</h3>
+                <p className="text-4xl font-bold mt-4">{plan.price}</p>
+                <p className="text-muted-foreground">{plan.period || plan.altPrice}</p>
             </div>
-            <div className="border-t border-muted my-4"></div>
-            <ul className="space-y-2 text-card-foreground">
+            <div className="border-t border-muted my-6"></div>
+            <ul className="space-y-3">
                 {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-center">
-                        <CheckIcon className="h-5 w-5 text-green-400 mr-2" />
+                        <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
                         <span>{feature}</span>
                     </li>
                 ))}
             </ul>
-          </Label>
+          </div>
         ))}
-      </RadioGroup>
+      </div>
       <div className="flex justify-center mt-8">
-        <Button size="lg" className="w-full max-w-md text-2xl font-bold bg-green-500 hover:bg-green-600 text-white h-16 rounded-xl shadow-lg">
+        <Button size="lg" className="w-full max-w-md text-2xl font-bold bg-[#F54278] hover:bg-[#F54278]/90 text-white h-16 rounded-xl shadow-lg animate-pulse">
           QUERO MEU ACESSO AGORA!
         </Button>
+      </div>
+      <div className="flex items-center justify-center mt-4 text-sm text-primary-foreground">
+        <Star className="w-4 h-4 mr-1 text-yellow-400 fill-yellow-400" />
+        <span>Compra <strong>100% segura</strong> com garantia de 7 dias</span>
       </div>
     </section>
   );
