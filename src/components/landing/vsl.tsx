@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function Vsl() {
   return (
-    <section className="w-full bg-background flex justify-center items-center" style={{ minHeight: '400px' }}>
+    <section className="w-full bg-black flex justify-center items-center" style={{ minHeight: '400px' }}>
       <div className="w-full h-full relative" style={{ minHeight: '400px' }}>
          <Image
             src="https://placehold.co/1200x675"
