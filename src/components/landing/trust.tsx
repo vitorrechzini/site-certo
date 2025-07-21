@@ -14,7 +14,7 @@ const trustItems = [
 
 export default function Trust() {
   return (
-    <section className="bg-black text-white py-12 px-4">
+    <section className="bg-background text-white py-12 px-4">
       <div className="grid grid-cols-3 gap-x-4 gap-y-8 max-w-md mx-auto">
         {trustItems.map((item, index) => (
           <div key={index} className="flex flex-col items-center text-center">

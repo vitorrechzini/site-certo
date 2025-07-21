@@ -8,7 +8,7 @@ export default function Footer() {
             ATENÇÃO: Esta promoção é válida somente hoje!
             </p>
         </div>
-        <div className="bg-black text-center py-8 px-4 text-white">
+        <div className="bg-background text-center py-8 px-4 text-white">
             <div className="flex items-center justify-center w-full mb-4">
                 <Eye className="text-white h-6 w-6 mr-2" />
                 <h1 className="text-2xl font-bold font-headline">OnlyFree</h1>
