@@ -98,7 +98,7 @@ export default function Plans() {
             size="lg" 
             className={cn(
               "w-full max-w-md text-xl font-bold bg-red-600 hover:bg-red-700 text-white h-16 rounded-lg shadow-lg",
-              selectedPlan && "animate-pulse"
+              selectedPlan && "animate-scale-pulse"
             )}
             onClick={handleCtaClick}
           >
