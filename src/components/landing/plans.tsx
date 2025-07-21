@@ -58,15 +58,10 @@ export default function Plans() {
               key={plan.id}
               onClick={() => setSelectedPlan(plan.id)}
               className={cn(
-                "flex items-stretch bg-[#1C0B0B] rounded-lg cursor-pointer border-2 transition-all relative overflow-hidden",
+                "flex items-stretch bg-[#1C0B0B] rounded-lg cursor-pointer border-2 transition-all relative",
                 selectedPlan === plan.id ? 'border-red-600' : 'border-[#2A1C1C]'
               )}
             >
-              {plan.tag && (
-                <div className="absolute -top-3 right-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-md">
-                    {plan.tag}
-                </div>
-              )}
               <div className="flex items-center space-x-4 flex-grow p-4">
                 <div 
                     className={cn(
@@ -82,7 +77,12 @@ export default function Plans() {
                 </div>
               </div>
 
-              <div className="text-right flex items-center bg-red-600 px-4">
+              <div className="relative text-right flex flex-col justify-center bg-red-600 px-4">
+                 {plan.tag && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-md z-10 whitespace-nowrap">
+                        {plan.tag}
+                    </div>
+                  )}
                 <div className="text-white">
                     <p className="text-xs line-through text-red-200">{plan.oldPrice}</p>
                     <p className="text-2xl font-bold">
