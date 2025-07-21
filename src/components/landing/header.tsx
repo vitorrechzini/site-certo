@@ -5,7 +5,7 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background flex flex-col items-center shadow-lg w-full">
       <div className="flex items-center justify-center w-full h-20">
         <Image
-          src="/__tmp__/image.png"
+          src="/image.png"
           alt="OnlyFree Logo"
           width={150}
           height={40}
