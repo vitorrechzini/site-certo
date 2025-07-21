@@ -49,7 +49,7 @@ export default function Gallery() {
                   fill
                   style={{objectFit: "contain"}}
                   data-ai-hint={image.hint}
-                  className="rounded-lg"
+                  className="rounded-3xl"
                 />
               </div>
             </CarouselItem>
