@@ -37,29 +37,27 @@ export default function Gallery() {
   }, [api])
 
   return (
-    <section className="w-full py-8">
-      <div className="max-w-lg mx-auto">
-        <Carousel setApi={setApi} className="w-full" opts={{ loop: true }}>
-          <CarouselContent>
-            {images.map((image, index) => (
-              <CarouselItem key={index}>
-                <div className="relative w-full aspect-[9/16]">
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    style={{objectFit: "cover"}}
-                    data-ai-hint={image.hint}
-                    className="rounded-lg"
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="absolute left-4" />
-          <CarouselNext className="absolute right-4" />
-        </Carousel>
-      </div>
+    <section className="w-full py-8 px-4">
+      <Carousel setApi={setApi} className="w-full" opts={{ loop: true }}>
+        <CarouselContent>
+          {images.map((image, index) => (
+            <CarouselItem key={index}>
+              <div className="relative w-full aspect-video">
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  style={{objectFit: "contain"}}
+                  data-ai-hint={image.hint}
+                  className="rounded-lg"
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="absolute left-4" />
+        <CarouselNext className="absolute right-4" />
+      </Carousel>
     </section>
   )
 }
