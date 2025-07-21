@@ -5,15 +5,15 @@ import Image from 'next/image'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel"
 
 const images = [
-  { src: "/foto1.png", alt: "Gallery image 1", hint: "woman model" },
-  { src: "/foto2.png", alt: "Gallery image 2", hint: "man model" },
-  { src: "/foto3.png", alt: "Gallery image 3", hint: "fashion style" },
-  { src: "/foto4.png", alt: "Gallery image 4", hint: "lifestyle" },
-  { src: "/foto5.png", alt: "Gallery image 5", hint: "woman fashion" },
-  { src: "/foto6.png", alt: "Gallery image 6", hint: "man fashion" },
-  { src: "/foto7.png", alt: "Gallery image 7", hint: "glamour" },
-  { src: "/foto8.png", alt: "Gallery image 8", hint: "model pose" },
-  { src: "/foto9.png", alt: "Gallery image 9", hint: "beauty" },
+  { src: "/foto1.jpeg", alt: "Gallery image 1", hint: "woman model" },
+  { src: "/foto2.jpeg", alt: "Gallery image 2", hint: "man model" },
+  { src: "/foto3.jpeg", alt: "Gallery image 3", hint: "fashion style" },
+  { src: "/foto4.jpeg", alt: "Gallery image 4", hint: "lifestyle" },
+  { src: "/foto5.jpeg", alt: "Gallery image 5", hint: "woman fashion" },
+  { src: "/foto6.jpeg", alt: "Gallery image 6", hint: "man fashion" },
+  { src: "/foto7.jpeg", alt: "Gallery image 7", hint: "glamour" },
+  { src: "/foto8.jpeg", alt: "Gallery image 8", hint: "model pose" },
+  { src: "/foto9.jpeg", alt: "Gallery image 9", hint: "beauty" },
   { src: "/foto10.png", alt: "Gallery image 10", hint: "luxury" },
 ];
 
