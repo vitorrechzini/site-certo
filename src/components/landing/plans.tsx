@@ -58,7 +58,7 @@ export default function Plans() {
               key={plan.id}
               onClick={() => setSelectedPlan(plan.id)}
               className={cn(
-                "flex items-center bg-[#1C0B0B] rounded-lg p-4 cursor-pointer border-2 transition-all relative",
+                "flex items-stretch bg-[#1C0B0B] rounded-lg cursor-pointer border-2 transition-all relative overflow-hidden",
                 selectedPlan === plan.id ? 'border-red-600' : 'border-[#2A1C1C]'
               )}
             >
@@ -67,7 +67,7 @@ export default function Plans() {
                     {plan.tag}
                 </div>
               )}
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 flex-grow p-4">
                 <div 
                     className={cn(
                         "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0",
@@ -82,7 +82,7 @@ export default function Plans() {
                 </div>
               </div>
 
-              <div className="ml-auto text-right flex items-center bg-red-600 rounded-md px-4 py-2">
+              <div className="text-right flex items-center bg-red-600 px-4">
                 <div className="text-white">
                     <p className="text-xs line-through text-red-200">{plan.oldPrice}</p>
                     <p className="text-2xl font-bold">
