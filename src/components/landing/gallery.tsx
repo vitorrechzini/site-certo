@@ -56,8 +56,8 @@ export default function Gallery() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 h-10 w-10 bg-white/20 hover:bg-white/30 border-none text-white" />
-        <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 bg-white/20 hover:bg-white/30 border-none text-white" />
+        <CarouselPrevious />
+        <CarouselNext />
       </Carousel>
     </section>
   )
