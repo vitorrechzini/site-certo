@@ -7,7 +7,7 @@ export default function Cta() {
       <h3 className="text-2xl font-semibold mt-4">
         LIBERAÇÃO IMEDIATA DO ACESSO!
       </h3>
-      <p className="mt-4 text-sm max-w-md mx-auto">
+      <p className="mt-4 text-sm mx-auto">
         EM QUALQUER HORA DO DIA OU DA NOITE! VOCÊ PAGA E JÁ ACESSA IMEDIATAMENTE!
       </p>
     </section>
