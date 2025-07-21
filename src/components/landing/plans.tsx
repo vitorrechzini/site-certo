@@ -50,7 +50,7 @@ export default function Plans() {
   };
 
   return (
-    <section className="w-full bg-background py-12 px-4">
+    <section className="w-full bg-background pt-4 pb-12 px-4">
       <div className="max-w-xl mx-auto">
         <div className="space-y-4">
           {plans.map((plan) => (

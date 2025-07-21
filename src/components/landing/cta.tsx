@@ -1,6 +1,6 @@
 export default function Cta() {
   return (
-    <section className="bg-background text-foreground text-center py-12 px-4">
+    <section className="bg-background text-foreground text-center pt-12 pb-4 px-4">
       <h2 className="text-5xl font-bold text-primary font-headline animate-pulse">
         ASSINE JÁ!
       </h2>
