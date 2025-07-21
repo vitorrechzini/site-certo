@@ -7,7 +7,7 @@ const reviews = [
   { name: 'Pedro Souza', image: 'https://placehold.co/100x100', rating: 5, comment: 'meu deus, é um vídeo melhor que o outro', hint: 'man portrait'},
   { name: 'Carlos Álvez', image: 'https://placehold.co/100x100', rating: 5, comment: 'se é loco, nunca mais Xvideos..', hint: 'man portrait'},
   { name: 'Lucas Rodrigues', image: 'https://placehold.co/100x100', rating: 4, comment: 'Essa melody é muito safada pqp, melhor grupo que ja entrei', hint: 'man smiling'},
-  { name: 'Marcos Ferreira', image: 'https://placehold.co/100x100', rating: 5, comment: 'O suporte é excelente e o conteúdo é sempre novo. Valeu muito a pena!', hint: 'man glasses'},
+  { name: 'Marcos Ferreira', image: 'https://placehold.co/100x100', rating: 5, comment: 'Muito barato pela qualidade que entrega, chegou muito rápido e as mina são top!', hint: 'man glasses'},
 ];
 
 const StarRating = ({ rating }: { rating: number }) => (
