@@ -220,7 +220,7 @@ const CarouselPrevious = React.forwardRef<
       size={size}
       className={cn(
         "absolute h-8 w-8 rounded-full",
-        "h-10 w-10 bg-white/20 hover:bg-white/30 border-none text-white left-2",
+        "h-10 w-10 bg-white/20 hover:bg-white/30 border-none text-white left-2 top-1/2 -translate-y-1/2",
         className
       )}
       disabled={!canScrollPrev}
@@ -254,7 +254,7 @@ const CarouselNext = React.forwardRef<
       size={size}
       className={cn(
         "absolute h-8 w-8 rounded-full",
-        "h-10 w-10 bg-white/20 hover:bg-white/30 border-none text-white right-2",
+        "h-10 w-10 bg-white/20 hover:bg-white/30 border-none text-white right-2 top-1/2 -translate-y-1/2",
         className
       )}
       disabled={!canScrollNext}
