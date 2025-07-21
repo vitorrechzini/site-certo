@@ -38,7 +38,7 @@ export default function Gallery() {
 
   return (
     <section className="w-full py-8">
-      <div className="max-w-md mx-auto">
+      <div className="max-w-lg mx-auto">
         <Carousel setApi={setApi} className="w-full" opts={{ loop: true }}>
           <CarouselContent>
             {images.map((image, index) => (
