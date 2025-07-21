@@ -3,9 +3,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Star } from 'lucide-react';
 
 const reviews = [
-  { name: 'Ana P.', image: 'https://placehold.co/100x100', rating: 5, comment: 'Incrível! Conteúdo de qualidade e acesso super rápido. Recomendo demais!', hint: 'woman portrait'},
+  { name: 'Pedro A.', image: 'https://placehold.co/100x100', rating: 5, comment: 'Incrível! Conteúdo de qualidade e acesso super rápido. Recomendo demais!', hint: 'man portrait'},
   { name: 'Carlos S.', image: 'https://placehold.co/100x100', rating: 5, comment: 'A melhor plataforma que já assinei. As atualizações são constantes e valem cada centavo.', hint: 'man portrait'},
-  { name: 'Juliana M.', image: 'https://placehold.co/100x100', rating: 4, comment: 'Muito bom, bastante variedade. O preço vitalício é imbatível.', hint: 'woman smiling'},
+  { name: 'Lucas M.', image: 'https://placehold.co/100x100', rating: 4, comment: 'Muito bom, bastante variedade. O preço vitalício é imbatível.', hint: 'man smiling'},
 ];
 
 const StarRating = ({ rating }: { rating: number }) => (
