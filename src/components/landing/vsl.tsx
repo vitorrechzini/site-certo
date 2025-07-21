@@ -2,10 +2,10 @@ import Image from 'next/image';
 
 export default function Vsl() {
   return (
-    <section className="w-full bg-black flex justify-center items-center" style={{ minHeight: '400px' }}>
-      <div className="w-full h-full relative" style={{ minHeight: '400px' }}>
+    <section className="w-full bg-black flex justify-center items-center" style={{ height: '70vh', maxHeight: '600px' }}>
+      <div className="w-full h-full relative">
          <Image
-            src="https://placehold.co/1200x675"
+            src="https://placehold.co/1080x1920"
             alt="VSL Placeholder"
             fill
             style={{objectFit: 'cover'}}
