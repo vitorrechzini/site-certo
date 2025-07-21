@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Star, StarHalf } from 'lucide-react';
 
 const reviews = [
-  { name: 'Pedro Souza', image: 'https://placehold.co/100x100', rating: 5, comment: 'Incrível! Conteúdo de qualidade e acesso super rápido. Recomendo demais!', hint: 'man portrait'},
+  { name: 'Pedro Souza', image: 'https://placehold.co/100x100', rating: 5, comment: 'meu deus, é um vídeo melhor que o outro', hint: 'man portrait'},
   { name: 'Carlos Álvez', image: 'https://placehold.co/100x100', rating: 5, comment: 'A melhor plataforma que já assinei. As atualizações são constantes e valem cada centavo.', hint: 'man portrait'},
   { name: 'Lucas Rodrigues', image: 'https://placehold.co/100x100', rating: 4, comment: 'Muito bom, bastante variedade. O preço vitalício é imbatível.', hint: 'man smiling'},
   { name: 'Marcos Ferreira', image: 'https://placehold.co/100x100', rating: 5, comment: 'O suporte é excelente e o conteúdo é sempre novo. Valeu muito a pena!', hint: 'man glasses'},
