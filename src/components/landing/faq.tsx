@@ -72,7 +72,7 @@ export default function Faq() {
         <Accordion type="single" collapsible className="w-full">
           {faqItems.map((item, index) => (
              <AccordionItem value={`item-${index}`} key={index} className="border-b border-gray-700">
-                <AccordionTrigger className="text-left font-semibold text-white hover:no-underline py-4 text-base [&>svg]:hidden">
+                <AccordionTrigger className="text-left font-semibold text-white hover:no-underline py-4 text-base">
                   <div className="flex items-center">
                     <span className="text-red-600 mr-2 text-xl leading-none">&#9654;</span>
                     {item.question}

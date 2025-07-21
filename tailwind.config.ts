@@ -96,7 +96,7 @@ export default {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'scale-pulse': 'scale-pulse 2s infinite',
+        'scale-pulse': 'scale-pulse 1.5s infinite',
       },
     },
   },
