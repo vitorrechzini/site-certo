@@ -1,21 +1,28 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Star } from 'lucide-react';
+import { Star, StarHalf } from 'lucide-react';
 
 const reviews = [
   { name: 'Pedro Souza', image: 'https://placehold.co/100x100', rating: 5, comment: 'Incrível! Conteúdo de qualidade e acesso super rápido. Recomendo demais!', hint: 'man portrait'},
   { name: 'Carlos Álvez', image: 'https://placehold.co/100x100', rating: 5, comment: 'A melhor plataforma que já assinei. As atualizações são constantes e valem cada centavo.', hint: 'man portrait'},
-  { name: 'Lucas Rodrigues', image: 'https://placehold.co/100x100', rating: 4, comment: 'Muito bom, bastante variedade. O preço vitalício é imbatível.', hint: 'man smiling'},
+  { name: 'Lucas Rodrigues', image: 'https://placehold.co/100x100', rating: 4.5, comment: 'Muito bom, bastante variedade. O preço vitalício é imbatível.', hint: 'man smiling'},
   { name: 'Marcos Ferreira', image: 'https://placehold.co/100x100', rating: 5, comment: 'O suporte é excelente e o conteúdo é sempre novo. Valeu muito a pena!', hint: 'man glasses'},
 ];
 
 const StarRating = ({ rating }: { rating: number }) => (
-  <div className="flex items-center">
-    {[...Array(5)].map((_, i) => (
-      <Star key={i} className={`h-5 w-5 ${i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'}`} />
-    ))}
-  </div>
-);
+    <div className="flex items-center">
+      {[...Array(5)].map((_, i) => {
+        const ratingValue = i + 1;
+        if (ratingValue <= rating) {
+          return <Star key={i} className="h-5 w-5 text-yellow-400 fill-yellow-400" />;
+        }
+        if (ratingValue - 0.5 === rating) {
+          return <StarHalf key={i} className="h-5 w-5 text-yellow-400 fill-yellow-400" />;
+        }
+        return <Star key={i} className="h-5 w-5 text-gray-400" />;
+      })}
+    </div>
+  );
 
 export default function Reviews() {
   return (
