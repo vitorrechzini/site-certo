@@ -39,7 +39,7 @@ export default function Gallery() {
   return (
     <section className="w-full py-8 px-4">
       <Carousel setApi={setApi} className="w-full" opts={{ loop: true }}>
-        <CarouselContent>
+        <CarouselContent className="rounded-3xl">
           {images.map((image, index) => (
             <CarouselItem key={index}>
               <div className="relative w-full aspect-video">
