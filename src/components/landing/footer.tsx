@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="bg-black text-center py-8 px-4 text-white">
             <div className="flex items-center justify-center w-full mb-4">
                <Image
-                src="/image.png"
+                src="/logo.png"
                 alt="OnlyFree Logo"
                 width={150}
                 height={40}
