@@ -1,4 +1,4 @@
-import { Eye } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
@@ -10,8 +10,13 @@ export default function Footer() {
         </div>
         <div className="bg-black text-center py-8 px-4 text-white">
             <div className="flex items-center justify-center w-full mb-4">
-                <Eye className="text-white h-6 w-6 mr-2" />
-                <h1 className="text-2xl font-bold font-headline">OnlyFree</h1>
+               <Image
+                src="/__tmp__/image.png"
+                alt="OnlyFree Logo"
+                width={150}
+                height={40}
+                style={{ objectFit: 'contain' }}
+              />
             </div>
             <p className="text-xs text-gray-400">
                 Todos os Direitos Reservados 2025 - OnlyFree
