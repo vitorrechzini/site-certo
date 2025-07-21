@@ -67,7 +67,7 @@ export default function Gallery() {
         onNextClick={handleInteraction}
         onPrevClick={handleInteraction}
       >
-        <CarouselContent className="rounded-3xl">
+        <CarouselContent className="rounded-[15px]">
           {images.map((image, index) => (
             <CarouselItem key={index}>
               <div className="relative w-full aspect-video">
@@ -77,7 +77,7 @@ export default function Gallery() {
                   fill
                   style={{objectFit: "contain"}}
                   data-ai-hint={image.hint}
-                  className="rounded-3xl"
+                  className="rounded-[15px]"
                 />
               </div>
             </CarouselItem>
