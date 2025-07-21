@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
@@ -21,9 +22,9 @@ export default function Footer() {
             <p className="text-xs text-gray-400">
                 Todos os Direitos Reservados 2025 - OnlyFree
             </p>
-            <a href="#" className="text-xs text-gray-400 underline mt-2 inline-block">
+            <Link href="/remocao" className="text-xs text-gray-400 underline mt-2 inline-block">
                 Política de remoção de conteúdo
-            </a>
+            </Link>
         </div>
     </footer>
   );
