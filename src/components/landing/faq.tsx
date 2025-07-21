@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { usePlan } from "@/context/PlanContext";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const faqItems = [
     {
@@ -86,7 +87,10 @@ export default function Faq() {
         <div className="flex justify-center mt-8">
             <Button 
               size="lg" 
-              className="w-full max-w-md text-xl font-bold bg-red-600 hover:bg-red-700 text-white h-14 rounded-lg shadow-lg"
+              className={cn(
+                "w-full max-w-md text-xl font-bold bg-red-600 hover:bg-red-700 text-white h-14 rounded-lg shadow-lg",
+                selectedPlan && "animate-pulse"
+              )}
               onClick={handleCtaClick}
             >
                 Acessar Agora

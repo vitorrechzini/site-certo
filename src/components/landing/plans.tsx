@@ -96,7 +96,10 @@ export default function Plans() {
         <div className="flex justify-center mt-8">
           <Button 
             size="lg" 
-            className="w-full max-w-md text-xl font-bold bg-red-600 hover:bg-red-700 text-white h-16 rounded-lg shadow-lg"
+            className={cn(
+              "w-full max-w-md text-xl font-bold bg-red-600 hover:bg-red-700 text-white h-16 rounded-lg shadow-lg",
+              selectedPlan && "animate-pulse"
+            )}
             onClick={handleCtaClick}
           >
             ASSINAR AGORA
