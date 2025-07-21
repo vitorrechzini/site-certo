@@ -85,9 +85,10 @@ export default function Plans() {
                   )}
                 <div className="text-white">
                     <p className="text-xs line-through text-red-200">{plan.oldPrice}</p>
-                    <p className="text-2xl font-bold">
-                        <span className="text-sm align-top">R$</span>{plan.price}
-                    </p>
+                    <div className="flex items-baseline justify-end">
+                      <span className="text-sm font-bold mr-1">R$</span>
+                      <p className="text-2xl font-bold">{plan.price}</p>
+                    </div>
                 </div>
               </div>
             </div>
