@@ -27,8 +27,8 @@ const StarRating = ({ rating }: { rating: number }) => (
 export default function Reviews() {
   return (
     <section className="bg-black py-12 px-4">
-      <div className="text-center mb-8">
-        <h3 className="text-3xl font-bold font-headline">O que nossos clientes dizem</h3>
+      <div className="text-center mb-8 text-white">
+        <h3 className="text-3xl font-bold font-headline">Avaliações (487)</h3>
         <div className="flex items-center justify-center mt-2">
             <Star className="h-8 w-8 text-yellow-400 fill-yellow-400 mr-2" />
             <span className="text-2xl font-bold">4.9</span>
