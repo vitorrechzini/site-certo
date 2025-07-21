@@ -56,8 +56,8 @@ export default function Gallery() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="left-16" />
+        <CarouselNext className="right-16" />
       </Carousel>
     </section>
   )
