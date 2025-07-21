@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
+import { usePlan } from '@/context/PlanContext';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 const plans = [
   { 
@@ -31,7 +33,21 @@ const plans = [
 ];
 
 export default function Plans() {
-  const [selectedPlan, setSelectedPlan] = useState('vitalicio');
+  const { selectedPlan, setSelectedPlan } = usePlan();
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const handleCtaClick = () => {
+    if (selectedPlan) {
+      router.push(`/checkout?plan=${selectedPlan}`);
+    } else {
+      toast({
+        title: "⚠️ Selecione um Plano",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
+  };
 
   return (
     <section className="w-full bg-black py-12 px-4">
@@ -78,7 +94,11 @@ export default function Plans() {
           ))}
         </div>
         <div className="flex justify-center mt-8">
-          <Button size="lg" className="w-full max-w-md text-xl font-bold bg-red-600 hover:bg-red-700 text-white h-16 rounded-lg shadow-lg">
+          <Button 
+            size="lg" 
+            className="w-full max-w-md text-xl font-bold bg-red-600 hover:bg-red-700 text-white h-16 rounded-lg shadow-lg"
+            onClick={handleCtaClick}
+          >
             ASSINAR AGORA
             <ArrowRight className="ml-2 h-6 w-6" />
           </Button>

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Accordion,
   AccordionContent,
@@ -5,6 +7,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button";
+import { usePlan } from "@/context/PlanContext";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 const faqItems = [
     {
@@ -43,6 +48,22 @@ const faqItems = [
 
 
 export default function Faq() {
+  const { selectedPlan } = usePlan();
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const handleCtaClick = () => {
+    if (selectedPlan) {
+      router.push(`/checkout?plan=${selectedPlan}`);
+    } else {
+      toast({
+        title: "⚠️ Selecione um Plano",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
+  };
+
   return (
     <section className="w-full bg-black py-12 px-4">
       <div className="max-w-xl mx-auto">
@@ -51,8 +72,10 @@ export default function Faq() {
           {faqItems.map((item, index) => (
              <AccordionItem value={`item-${index}`} key={index} className="border-b border-gray-700">
                 <AccordionTrigger className="text-left font-semibold text-white hover:no-underline py-4 text-base [&>svg]:hidden">
-                  <span className="text-red-600 mr-2 text-xl leading-none">&#9654;</span>
-                  {item.question}
+                  <div className="flex items-center">
+                    <span className="text-red-600 mr-2 text-xl leading-none">&#9654;</span>
+                    {item.question}
+                  </div>
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-400 pb-4 pl-8">
                   {item.answer}
@@ -61,7 +84,11 @@ export default function Faq() {
           ))}
         </Accordion>
         <div className="flex justify-center mt-8">
-            <Button size="lg" className="w-full max-w-md text-xl font-bold bg-red-600 hover:bg-red-700 text-white h-14 rounded-lg shadow-lg">
+            <Button 
+              size="lg" 
+              className="w-full max-w-md text-xl font-bold bg-red-600 hover:bg-red-700 text-white h-14 rounded-lg shadow-lg"
+              onClick={handleCtaClick}
+            >
                 Acessar Agora
             </Button>
         </div>
