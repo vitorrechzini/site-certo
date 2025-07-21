@@ -19,6 +19,8 @@ type CarouselProps = {
   plugins?: CarouselPlugin
   orientation?: "horizontal" | "vertical"
   setApi?: (api: CarouselApi) => void
+  onNextClick?: React.MouseEventHandler<HTMLButtonElement>
+  onPrevClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
 type CarouselContextProps = {
@@ -54,6 +56,8 @@ const Carousel = React.forwardRef<
       plugins,
       className,
       children,
+      onNextClick,
+      onPrevClick,
       ...props
     },
     ref
@@ -132,6 +136,8 @@ const Carousel = React.forwardRef<
           scrollNext,
           canScrollPrev,
           canScrollNext,
+          onNextClick,
+          onPrevClick,
         }}
       >
         <div
@@ -198,7 +204,14 @@ const CarouselPrevious = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  const { orientation, scrollPrev, canScrollPrev } = useCarousel()
+  const { scrollPrev, canScrollPrev, onPrevClick } = useCarousel()
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    scrollPrev();
+    if (onPrevClick) {
+      onPrevClick(e);
+    }
+  };
 
   return (
     <Button
@@ -207,14 +220,11 @@ const CarouselPrevious = React.forwardRef<
       size={size}
       className={cn(
         "absolute h-8 w-8 rounded-full",
-        orientation === "horizontal"
-          ? "-left-12 top-1/2 -translate-y-1/2"
-          : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
         "h-10 w-10 bg-white/20 hover:bg-white/30 border-none text-white left-2",
         className
       )}
       disabled={!canScrollPrev}
-      onClick={scrollPrev}
+      onClick={handleClick}
       {...props}
     >
       <ArrowLeft className="h-4 w-4" />
@@ -228,7 +238,14 @@ const CarouselNext = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  const { orientation, scrollNext, canScrollNext } = useCarousel()
+  const { scrollNext, canScrollNext, onNextClick } = useCarousel()
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    scrollNext();
+    if (onNextClick) {
+      onNextClick(e);
+    }
+  };
 
   return (
     <Button
@@ -237,14 +254,11 @@ const CarouselNext = React.forwardRef<
       size={size}
       className={cn(
         "absolute h-8 w-8 rounded-full",
-        orientation === "horizontal"
-          ? "-right-12 top-1/2 -translate-y-1/2"
-          : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
         "h-10 w-10 bg-white/20 hover:bg-white/30 border-none text-white right-2",
         className
       )}
       disabled={!canScrollNext}
-      onClick={scrollNext}
+      onClick={handleClick}
       {...props}
     >
       <ArrowRight className="h-4 w-4" />

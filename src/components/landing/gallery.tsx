@@ -20,26 +20,53 @@ const images = [
 
 export default function Gallery() {
   const [api, setApi] = React.useState<CarouselApi>()
- 
+  const autoplayInterval = React.useRef<NodeJS.Timeout | null>(null);
+  const AUTOPLAY_DELAY = 3000;
+  const PAUSE_DURATION = 8000;
+
+  const startAutoplay = React.useCallback(() => {
+    stopAutoplay();
+    autoplayInterval.current = setInterval(() => {
+      api?.scrollNext();
+    }, AUTOPLAY_DELAY);
+  }, [api]);
+
+  const stopAutoplay = () => {
+    if (autoplayInterval.current) {
+      clearInterval(autoplayInterval.current);
+      autoplayInterval.current = null;
+    }
+  };
+
+  const handleInteraction = () => {
+    stopAutoplay();
+    setTimeout(startAutoplay, PAUSE_DURATION);
+  };
+
   React.useEffect(() => {
     if (!api) {
       return
     }
  
-    const interval = setInterval(() => {
-      if (api.canScrollNext()) {
-        api.scrollNext()
-      } else {
-        api.scrollTo(0)
-      }
-    }, 3000)
-    
-    return () => clearInterval(interval)
-  }, [api])
+    startAutoplay();
+    api.on("select", startAutoplay); // Restart autoplay on programmatic scroll
+    api.on("pointerDown", stopAutoplay); // Stop when user touches/drags
+    api.on("destroy", stopAutoplay);
+
+    return () => {
+      stopAutoplay();
+    };
+  }, [api, startAutoplay])
 
   return (
     <section className="w-full py-8 px-4">
-      <Carousel setApi={setApi} className="w-full" opts={{ loop: true }}>
+      <Carousel 
+        setApi={setApi} 
+        className="w-full" 
+        opts={{ loop: true }}
+        onNextClick={handleInteraction}
+        onPrevClick={handleInteraction}
+      >
         <CarouselContent className="rounded-3xl">
           {images.map((image, index) => (
             <CarouselItem key={index}>
