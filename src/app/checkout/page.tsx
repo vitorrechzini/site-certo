@@ -113,11 +113,11 @@ export default function CheckoutPage() {
                 }}
                 className="w-full"
                 >
-                <CarouselContent className="-ml-1 pl-1">
+                <CarouselContent className="-ml-4">
                     {models.map((model, index) => (
-                    <CarouselItem key={index} className="basis-auto pl-2">
-                        <div className="flex flex-col items-center text-center w-[120px]">
-                            <div className="relative w-[120px] h-[120px] rounded-lg overflow-hidden">
+                    <CarouselItem key={index} className="basis-1/3 pl-4">
+                        <div className="flex flex-col items-center text-center">
+                            <div className="relative w-full aspect-square rounded-lg overflow-hidden">
                                 <Image
                                 src={model.src}
                                 alt={model.name}
