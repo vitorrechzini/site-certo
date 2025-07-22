@@ -9,7 +9,7 @@ export default function CheckoutFooter() {
             <p className="font-bold">OnlyFree</p>
         </div>
         <p className="text-xs text-gray-400">
-            Todos os Direitos Reservados 2025 - <span className="text-blue-500">PriveFlix</span>
+            Todos os Direitos Reservados 2025 - <span className="text-blue-500">OnlyFree</span>
         </p>
     </footer>
   );
