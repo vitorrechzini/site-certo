@@ -17,7 +17,7 @@ import { useToast } from '@/hooks/use-toast';
 
 
 const models = [
-  { src: "/Checkout1.webp", name: 'Kinechan', hint: 'woman model' },
+  { src: "/Checkout1.webp", name: 'Mc Pipokinha', hint: 'woman model' },
   { src: "/Checkout2.webp", name: 'Juliana Bonde', hint: 'woman model' },
   { src: "/Checkout3.webp", name: 'Andressa Urach', hint: 'fashion style' },
   { src: "/Checkout4.webp", name: 'Kerolay Chaves', hint: 'lifestyle' },
@@ -105,18 +105,17 @@ export default function CheckoutPage() {
         <section className="py-8 px-4 w-full">
             <div className="grid grid-cols-5 gap-2">
                 {models.map((model, index) => (
-                    <div key={index} className="flex flex-col items-center text-center">
-                        <div className="relative w-full aspect-square rounded-lg overflow-hidden">
-                            <Image
-                                src={model.src}
-                                alt={model.name}
-                                fill
-                                style={{objectFit: "cover"}}
-                                data-ai-hint={model.hint}
-                                className="rounded-lg"
-                            />
-                        </div>
-                        <p className="mt-2 text-white font-bold text-xs">{model.name}</p>
+                    <div key={index} className="relative w-full aspect-square rounded-lg overflow-hidden">
+                        <Image
+                            src={model.src}
+                            alt={model.name}
+                            fill
+                            style={{objectFit: "cover"}}
+                            data-ai-hint={model.hint}
+                            className="rounded-lg"
+                        />
+                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <p className="absolute bottom-2 left-2 text-white font-bold text-xs">{model.name}</p>
                     </div>
                 ))}
             </div>
