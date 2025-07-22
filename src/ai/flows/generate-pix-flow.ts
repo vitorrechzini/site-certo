@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview A flow to generate a PIX payment using Pushin Pay API.
@@ -11,13 +12,13 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import axios from 'axios';
 
-export const GeneratePixInputSchema = z.object({
+const GeneratePixInputSchema = z.object({
   value: z.number().describe('The value of the PIX payment.'),
   description: z.string().describe('The description of the product or service.'),
 });
 export type GeneratePixInput = z.infer<typeof GeneratePixInputSchema>;
 
-export const GeneratePixOutputSchema = z.object({
+const GeneratePixOutputSchema = z.object({
   qr_code_image: z.string().describe('The base64 encoded QR code image.'),
   qr_code_text: z.string().describe('The PIX copy-and-paste code.'),
 });
