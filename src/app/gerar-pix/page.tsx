@@ -9,7 +9,7 @@ import { Suspense } from 'react';
 
 function PixComponent() {
     const searchParams = useSearchParams();
-    const price = searchParams.get('price') || '9,90';
+    const price = searchParams.get('price') || '19,90';
     const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutes in seconds
     const [isCopied, setIsCopied] = useState(false);
 
