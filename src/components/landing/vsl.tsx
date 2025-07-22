@@ -9,7 +9,7 @@ export default function Vsl() {
             alt="VSL Placeholder"
             fill
             style={{objectFit: 'contain'}}
-            className="w-full h-full"
+            className="w-full h-full rounded-lg"
             data-ai-hint="video thumbnail"
           />
       </div>
