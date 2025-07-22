@@ -1,11 +1,10 @@
 
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import { Copy, Check, Clock } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
 
 function PixComponent() {
     const searchParams = useSearchParams();
@@ -45,7 +44,7 @@ function PixComponent() {
                 Pague seu Pix dentro de <strong className="text-white">{String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}</strong> para liberar seu acesso.
             </p>
 
-            <div className="bg-[#fff5cc] text-black font-bold rounded-full py-2 px-6 mt-6 flex items-center gap-2">
+            <div className="bg-[#facc15] text-black font-bold rounded-full py-2 px-6 mt-6 flex items-center gap-2">
                 <Clock className="w-5 h-5" />
                 <span>Aguardando pagamento</span>
             </div>
@@ -82,8 +81,11 @@ function PixComponent() {
         <footer className="text-center text-xs text-gray-500 py-6 px-4 space-y-2">
             <p>Pix processado por: <strong className="text-white font-semibold">PUSHIN PAY</strong></p>
             <p>Constará no seu extrato da sua conta bancária o nome <strong className="text-white font-semibold">PUSHIN PAY</strong>.</p>
-            <p>Esta compra será processada pela PUSHIN PAY © 2025 - Todos os direitos reservados.</p>
-            <p>Sua compra de acesso será processada com segurança e discrição por PUSHIN PAY. Se você encontrar algum problema durante o processo de compra, favor contatar Apoio ao Cliente.</p>
+            <p>
+                Esta compra será processada pela PUSHIN PAY © 2025 - Todos os direitos reservados. 
+                Sua compra de acesso será processada com segurança e discrição por PUSHIN PAY. 
+                Se você encontrar algum problema durante o processo de compra, favor contatar Apoio ao Cliente.
+            </p>
         </footer>
         </div>
     );
