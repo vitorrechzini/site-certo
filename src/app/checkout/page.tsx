@@ -75,7 +75,7 @@ export default function CheckoutPage() {
         <section className="py-8 px-4 text-white text-center">
             <h2 className="text-2xl font-bold mb-6">Cadastro de Usuário</h2>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-w-md mx-auto">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-w-lg mx-auto">
                     <FormField
                         control={form.control}
                         name="email"
@@ -92,12 +92,12 @@ export default function CheckoutPage() {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" size="lg" className="w-full max-w-md bg-green-500 hover:bg-green-600 text-white font-bold text-lg h-14">
+                    <Button type="submit" size="lg" className="w-full bg-green-500 hover:bg-green-600 text-white font-bold text-lg h-14">
                         <Check className="mr-2" /> CADASTRAR E GERAR PIX
                     </Button>
                 </form>
             </Form>
-             <p className="text-xs text-gray-400 mt-4 max-w-md mx-auto">
+             <p className="text-xs text-gray-400 mt-4 max-w-lg mx-auto">
                 Seu e-mail está 100% seguro, usaremos apenas para identificar seu cadastro e processar a assinatura.
             </p>
         </section>
