@@ -22,7 +22,7 @@ export default function CheckoutPromoPage() {
             Esta é uma página de placeholder para o checkout da promoção.
           </p>
            <Button asChild size="lg" className="mt-6 w-full font-bold text-lg">
-            <Link href="#">Finalizar Compra <ArrowRight className="ml-2"/></Link>
+            <Link href="/checkout?plan=promocional">Finalizar Compra <ArrowRight className="ml-2"/></Link>
           </Button>
         </CardContent>
       </Card>

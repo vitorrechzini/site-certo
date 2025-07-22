@@ -13,9 +13,13 @@ import Footer from '@/components/landing/footer';
 import { PlanProvider } from '@/context/PlanContext';
 import useExitIntent from '@/hooks/use-exit-intent';
 import ExitIntentPopup from '@/components/landing/ExitIntentPopup';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  const { showPopup, setShowPopup } = useExitIntent();
+  const router = useRouter();
+  const { showPopup, setShowPopup } = useExitIntent(() => {
+    router.push('/checkout-promo');
+  });
 
   return (
     <PlanProvider>
