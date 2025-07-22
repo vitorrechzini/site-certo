@@ -22,11 +22,11 @@ import {
 
 
 const models = [
-  { src: '/foto1.jpeg', name: 'Emily', hint: 'woman model' },
-  { src: '/foto2.jpeg', name: 'Jessica', hint: 'man model' },
-  { src: '/foto3.jpeg', name: 'Sophia', hint: 'fashion style' },
-  { src: '/foto4.jpeg', name: 'Laura', hint: 'lifestyle' },
-  { src: '/foto5.jpeg', name: 'Chloe', hint: 'woman fashion' },
+  { src: "https://placehold.co/240x240.png", name: 'Mc Pipokinha', hint: 'woman model' },
+  { src: "https://placehold.co/240x240.png", name: 'Juliana Bonde', hint: 'woman model' },
+  { src: "https://placehold.co/240x240.png", name: 'Andressa Urach', hint: 'fashion style' },
+  { src: "https://placehold.co/240x240.png", name: 'Kerolay Chaves', hint: 'lifestyle' },
+  { src: "https://placehold.co/240x240.png", name: 'Cibelly Ferreira', hint: 'woman fashion' },
 ];
 
 const FormSchema = z.object({
@@ -67,15 +67,10 @@ export default function CheckoutPage() {
 
       <main className="flex-grow">
         <section className="w-full bg-black flex justify-center items-center">
-            <div className="w-full aspect-video relative max-h-[50vh]">
-                <Image
-                src="https://placehold.co/1080x1920"
-                alt="VSL Placeholder"
-                fill
-                style={{objectFit: 'contain'}}
-                className="w-full h-full"
-                data-ai-hint="video thumbnail"
-                />
+            <div className="w-full aspect-video relative max-h-[300px]">
+                <div className="w-full h-full flex items-center justify-center text-gray-500 text-lg bg-black">
+                    VSL Vídeo Aqui (embed ou imagem)
+                </div>
             </div>
         </section>
 
@@ -92,14 +87,14 @@ export default function CheckoutPage() {
                                 <Input 
                                     placeholder="E-mail" 
                                     {...field} 
-                                    className="bg-gray-800 border-gray-700 text-white h-12 text-center text-base"
+                                    className="bg-white border-none text-black h-12 text-center text-base"
                                 />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" size="lg" className="w-full bg-green-600 hover:bg-green-700 text-white font-bold text-lg h-14">
+                    <Button type="submit" size="lg" className="w-full max-w-md bg-green-500 hover:bg-green-600 text-white font-bold text-lg h-14">
                         <Check className="mr-2" /> CADASTRAR E GERAR PIX
                     </Button>
                 </form>
@@ -109,19 +104,20 @@ export default function CheckoutPage() {
             </p>
         </section>
 
-        <section className="py-8">
+        <section className="py-8 px-2">
              <Carousel
                 opts={{
                     align: "start",
-                    loop: true,
+                    loop: false,
+                    dragFree: true,
                 }}
-                className="w-full"
+                className="w-full max-w-5xl mx-auto"
                 >
                 <CarouselContent className="-ml-2">
                     {models.map((model, index) => (
-                    <CarouselItem key={index} className="basis-1/3 pl-2">
-                        <div className="flex flex-col items-center text-center">
-                            <div className="relative w-full aspect-square rounded-lg overflow-hidden">
+                    <CarouselItem key={index} className="basis-auto pl-2">
+                        <div className="flex flex-col items-center text-center w-[120px]">
+                            <div className="relative w-[120px] h-[120px] rounded-lg overflow-hidden">
                                 <Image
                                 src={model.src}
                                 alt={model.name}
