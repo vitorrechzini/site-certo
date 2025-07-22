@@ -22,11 +22,11 @@ import {
 
 
 const models = [
-  { src: "/Checkout1.jpeg", name: 'Kinechan', hint: 'woman model' },
-  { src: "/Checkout2.jpeg", name: 'Juliana Bonde', hint: 'woman model' },
-  { src: "/Checkout3.jpeg", name: 'Andressa Urach', hint: 'fashion style' },
-  { src: "/Checkout4.jpeg", name: 'Kerolay Chaves', hint: 'lifestyle' },
-  { src: "/Checkout5.jpeg", name: 'Cibelly Ferreira', hint: 'woman fashion' },
+  { src: "/Checkout1.webp", name: 'Kinechan', hint: 'woman model' },
+  { src: "/Checkout2.webp", name: 'Juliana Bonde', hint: 'woman model' },
+  { src: "/Checkout3.webp", name: 'Andressa Urach', hint: 'fashion style' },
+  { src: "/Checkout4.webp", name: 'Kerolay Chaves', hint: 'lifestyle' },
+  { src: "/Checkout5.webp", name: 'Cibelly Ferreira', hint: 'woman fashion' },
 ];
 
 const FormSchema = z.object({
