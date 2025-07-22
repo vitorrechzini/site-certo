@@ -71,14 +71,13 @@ export default function Gallery() {
         <CarouselContent>
           {images.map((image, index) => (
             <CarouselItem key={index}>
-              <div className="relative w-full aspect-video rounded-lg overflow-hidden">
+              <div className="relative w-full aspect-video overflow-hidden">
                 <Image
                   src={image.src}
                   alt={image.alt}
                   fill
-                  style={{objectFit: "contain"}}
+                  style={{objectFit: "contain", borderRadius: "10px"}}
                   data-ai-hint={image.hint}
-                  className="rounded-lg"
                 />
               </div>
             </CarouselItem>
