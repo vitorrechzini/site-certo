@@ -104,16 +104,16 @@ export default function CheckoutPage() {
             </p>
         </section>
 
-        <section className="py-8 px-2">
+        <section className="py-8">
              <Carousel
                 opts={{
                     align: "start",
                     loop: false,
                     dragFree: true,
                 }}
-                className="w-full max-w-5xl mx-auto"
+                className="w-full"
                 >
-                <CarouselContent className="-ml-2">
+                <CarouselContent className="-ml-4 pl-4">
                     {models.map((model, index) => (
                     <CarouselItem key={index} className="basis-auto pl-2">
                         <div className="flex flex-col items-center text-center w-[120px]">
