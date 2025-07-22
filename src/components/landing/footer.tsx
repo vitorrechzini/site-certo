@@ -20,7 +20,7 @@ export default function Footer() {
     <footer className="w-full mt-8">
         <div className="w-full bg-accent text-center py-2">
             <p className="font-bold text-accent-foreground text-sm">
-            ATENÇÃO: Esta promoção é válida somente hoje: {currentDate}
+            ATENÇÃO: Esta promoção é válida somente hoje: {currentDate}!
             </p>
         </div>
         <div className="bg-black text-center py-8 px-4 text-white">

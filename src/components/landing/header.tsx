@@ -28,7 +28,7 @@ export default function Header() {
       </div>
       <div className="w-full bg-accent text-center py-2 flex items-center justify-center h-10">
         <p className="font-bold text-accent-foreground text-sm">
-          ATENÇÃO: Esta promoção é válida somente hoje: {currentDate}
+          ATENÇÃO: Esta promoção é válida somente hoje: {currentDate}!
         </p>
       </div>
     </header>
