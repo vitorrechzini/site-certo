@@ -14,11 +14,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
 
 
 const models = [
@@ -104,35 +99,24 @@ export default function CheckoutPage() {
             </p>
         </section>
 
-        <section className="py-8 w-full overflow-hidden">
-             <Carousel
-                opts={{
-                    align: "start",
-                    loop: false,
-                    dragFree: true,
-                }}
-                className="w-full"
-                >
-                <CarouselContent className="-ml-4">
-                    {models.map((model, index) => (
-                    <CarouselItem key={index} className="basis-1/3 pl-4">
-                        <div className="flex flex-col items-center text-center">
-                            <div className="relative w-full aspect-square rounded-lg overflow-hidden">
-                                <Image
+        <section className="py-8 px-4 w-full">
+            <div className="grid grid-cols-5 gap-2">
+                {models.map((model, index) => (
+                    <div key={index} className="flex flex-col items-center text-center">
+                        <div className="relative w-full aspect-square rounded-lg overflow-hidden">
+                            <Image
                                 src={model.src}
                                 alt={model.name}
                                 fill
                                 style={{objectFit: "cover"}}
                                 data-ai-hint={model.hint}
                                 className="rounded-lg"
-                                />
-                            </div>
-                            <p className="mt-2 text-white font-bold">{model.name}</p>
+                            />
                         </div>
-                    </CarouselItem>
-                    ))}
-                </CarouselContent>
-            </Carousel>
+                        <p className="mt-2 text-white font-bold text-xs">{model.name}</p>
+                    </div>
+                ))}
+            </div>
         </section>
 
       </main>
