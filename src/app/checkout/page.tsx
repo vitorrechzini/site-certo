@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -33,6 +33,7 @@ const FormSchema = z.object({
 
 export default function CheckoutPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const plan = searchParams.get('plan') || 'Nenhum plano selecionado';
   const { toast } = useToast();
 
@@ -47,13 +48,15 @@ export default function CheckoutPage() {
     console.log("Email a ser salvo:", data.email);
     console.log("Plano selecionado:", plan);
     toast({
-      title: "Cadastro em andamento...",
-      description: "Redirecionando para a página de pagamento.",
-      variant: "default",
-      duration: 3000,
+      title: "Cadastro realizado com sucesso!",
+      description: "Redirecionando para a página de pagamento...",
+      duration: 2000,
     });
-    // Aqui viria a lógica para salvar no Firebase e redirecionar
-    // router.push('/gerar-pix');
+    
+    setTimeout(() => {
+        const planPrice = plan === 'vitalicio' ? '19.90' : (plan === 'mensal' ? '14.90' : '9.90');
+        router.push(`/gerar-pix?price=${planPrice}`);
+    }, 2000);
   }
 
   return (
@@ -71,7 +74,7 @@ export default function CheckoutPage() {
 
         <section className="py-8 px-4 text-white text-center">
             <h2 className="text-2xl font-bold mb-6">Cadastro de Usuário</h2>
-            <FormProvider {...form}>
+            <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-w-md mx-auto">
                     <FormField
                         control={form.control}
@@ -93,7 +96,7 @@ export default function CheckoutPage() {
                         <Check className="mr-2" /> CADASTRAR E GERAR PIX
                     </Button>
                 </form>
-            </FormProvider>
+            </Form>
              <p className="text-xs text-gray-400 mt-4 max-w-md mx-auto">
                 Seu e-mail está 100% seguro, usaremos apenas para identificar seu cadastro e processar a assinatura.
             </p>
