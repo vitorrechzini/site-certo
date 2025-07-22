@@ -1,12 +1,26 @@
+"use client";
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 export default function Footer() {
+  const [currentDate, setCurrentDate] = useState('');
+
+  useEffect(() => {
+    const date = new Date().toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+    setCurrentDate(date);
+  }, []);
+
   return (
     <footer className="w-full mt-8">
         <div className="w-full bg-accent text-center py-2">
             <p className="font-bold text-accent-foreground text-sm">
-            ATENÇÃO: Esta promoção é válida somente hoje!
+            ATENÇÃO: Esta promoção é válida somente hoje: {currentDate}
             </p>
         </div>
         <div className="bg-black text-center py-8 px-4 text-white">
