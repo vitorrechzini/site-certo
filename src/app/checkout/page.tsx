@@ -105,16 +105,16 @@ export default function CheckoutPage() {
         <section className="py-8 px-4 w-full">
             <div className="grid grid-cols-5 gap-2">
                 {models.map((model, index) => (
-                    <div key={index} className="relative w-full aspect-square rounded-lg overflow-hidden">
+                    <div key={index} className="group relative w-full aspect-square rounded-lg overflow-hidden">
                         <Image
                             src={model.src}
                             alt={model.name}
                             fill
                             style={{objectFit: "cover"}}
                             data-ai-hint={model.hint}
-                            className="rounded-lg"
+                            className="rounded-lg transition-transform duration-300 group-hover:scale-105"
                         />
-                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-300 group-hover:opacity-20"></div>
                         <p className="absolute bottom-2 left-2 text-white font-bold text-xs">{model.name}</p>
                     </div>
                 ))}
