@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -70,7 +71,7 @@ export default function Gallery() {
         <CarouselContent>
           {images.map((image, index) => (
             <CarouselItem key={index}>
-              <div className="relative w-full aspect-video">
+              <div className="relative w-full aspect-video rounded-lg overflow-hidden">
                 <Image
                   src={image.src}
                   alt={image.alt}
