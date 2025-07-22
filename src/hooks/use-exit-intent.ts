@@ -1,66 +1,44 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useCallback, useRef } from 'react';
 
 export default function useExitIntent(onExit: () => void) {
-  const [showPopup, setShowPopup] = useState(false);
-  const router = useRouter();
+  const onExitRef = useRef(onExit);
+  onExitRef.current = onExit;
 
-  const handleExit = useCallback(() => {
-    // Check if the user has already seen the popup in this session
-    const hasSeenPopup = sessionStorage.getItem('exitIntentPopupSeen');
-    if (!hasSeenPopup) {
-      setShowPopup(true);
-      sessionStorage.setItem('exitIntentPopupSeen', 'true');
-      // Push a state to the history to handle the back button after showing the popup
-      window.history.pushState({ popup: true }, '');
+  const handlePopState = useCallback(() => {
+    const hasSeenOffer = sessionStorage.getItem('exitIntentOfferSeen');
+    if (!hasSeenOffer) {
+      sessionStorage.setItem('exitIntentOfferSeen', 'true');
+      onExitRef.current();
+    } else {
+      // If they've seen the offer, let them go back normally.
+      window.history.back();
     }
   }, []);
-  
+
   useEffect(() => {
-    const handleMouseOut = (event: MouseEvent) => {
-      // Desktop exit intent
-      if (event.clientY <= 0 && event.relatedTarget == null && event.target) {
-        handleExit();
-      }
-    };
+    // Push a new state to the history stack. When the user clicks 'back', 
+    // we'll intercept the 'popstate' event instead of them leaving the page.
+    window.history.pushState(null, '');
 
-    const handlePopState = (event: PopStateEvent) => {
-        // If the popup is open and user hits back, just close it
-        if(showPopup) {
-            setShowPopup(false);
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+        // For desktop or cases where popstate isn't triggered
+        const hasSeenOffer = sessionStorage.getItem('exitIntentOfferSeen');
+        if (!hasSeenOffer) {
+             // Standard way to show a confirmation dialog
             event.preventDefault();
+            event.returnValue = '';
+            onExitRef.current();
         }
-    };
+    }
     
-    // Attempt to handle mobile back button / gestures
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-        // This is a last resort and has limited browser support for custom actions
-        handleExit();
-    };
-
-    window.history.pushState(null, ''); // Initial state
-    
-    document.addEventListener('mouseout', handleMouseOut);
     window.addEventListener('popstate', handlePopState);
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
-      document.removeEventListener('mouseout', handleMouseOut);
       window.removeEventListener('popstate', handlePopState);
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [handleExit, showPopup]);
-
-  // When popup opens, we add a new history state. 
-  // When it closes, we want to go back if the history state was ours.
-  const handleOpenChange = (isOpen: boolean) => {
-    if (!isOpen && window.history.state?.popup) {
-      window.history.back();
-    }
-    setShowPopup(isOpen);
-  }
-
-  return { showPopup, setShowPopup: handleOpenChange };
+  }, [handlePopState]);
 }

@@ -12,18 +12,16 @@ import Faq from '@/components/landing/faq';
 import Footer from '@/components/landing/footer';
 import { PlanProvider } from '@/context/PlanContext';
 import useExitIntent from '@/hooks/use-exit-intent';
-import ExitIntentPopup from '@/components/landing/ExitIntentPopup';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const router = useRouter();
-  const { showPopup, setShowPopup } = useExitIntent(() => {
+  useExitIntent(() => {
     router.push('/checkout-promo');
   });
 
   return (
     <PlanProvider>
-      <ExitIntentPopup isOpen={showPopup} onOpenChange={setShowPopup} />
       <div className="flex flex-col items-center bg-background min-h-screen">
         <Header />
         <main className="w-full mt-[120px]">
