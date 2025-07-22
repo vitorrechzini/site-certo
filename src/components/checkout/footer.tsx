@@ -1,0 +1,30 @@
+
+import Image from 'next/image';
+import Link from 'next/link';
+
+export default function CheckoutFooter() {
+  return (
+    <footer className="w-full mt-8 bg-black text-center py-8 px-4 text-white">
+        <div className="flex items-center justify-center w-full mb-4">
+            <Link href="/">
+                <Image
+                    src="/logo.png"
+                    alt="OnlyFree Logo"
+                    width={150}
+                    height={40}
+                    style={{ objectFit: 'contain' }}
+                />
+            </Link>
+        </div>
+        <p className="text-xs text-gray-400">
+            Todos os Direitos Reservados 2025 - OnlyFree
+        </p>
+        <Link href="#" className="text-xs text-blue-500 underline mt-2 inline-block mx-2">
+            PriveFlix
+        </Link>
+        <Link href="/remocao" className="text-xs text-gray-400 underline mt-2 inline-block mx-2">
+            Política de remoção de conteúdo
+        </Link>
+    </footer>
+  );
+}
