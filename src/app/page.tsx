@@ -11,14 +11,8 @@ import Reviews from '@/components/landing/reviews';
 import Faq from '@/components/landing/faq';
 import Footer from '@/components/landing/footer';
 import { PlanProvider } from '@/context/PlanContext';
-import useExitIntent from '@/hooks/use-exit-intent';
-import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  const router = useRouter();
-  useExitIntent(() => {
-    router.push('/checkout-promo');
-  });
 
   return (
     <PlanProvider>
