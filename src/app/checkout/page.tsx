@@ -83,9 +83,9 @@ export default function CheckoutPage() {
                             <FormItem>
                             <FormControl>
                                 <Input 
-                                    placeholder="E-mail" 
+                                    placeholder="e-mail" 
                                     {...field} 
-                                    className="bg-white border-none text-black h-12 text-center text-base"
+                                    className="bg-white border-none text-black h-12 text-base px-4"
                                 />
                             </FormControl>
                             <FormMessage />
