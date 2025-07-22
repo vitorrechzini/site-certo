@@ -97,7 +97,7 @@ export default function CheckoutPage() {
                     </Button>
                 </form>
             </Form>
-             <p className="text-xs text-gray-400 mt-4 max-w-lg mx-auto">
+             <p className="text-xs text-white mt-4 max-w-lg mx-auto">
                 Seu e-mail está 100% seguro, usaremos apenas para identificar seu cadastro e processar a assinatura.
             </p>
         </section>
