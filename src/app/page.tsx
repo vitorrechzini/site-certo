@@ -1,3 +1,5 @@
+"use client";
+
 import Header from '@/components/landing/header';
 import Vsl from '@/components/landing/vsl';
 import Cta from '@/components/landing/cta';
@@ -9,10 +11,15 @@ import Reviews from '@/components/landing/reviews';
 import Faq from '@/components/landing/faq';
 import Footer from '@/components/landing/footer';
 import { PlanProvider } from '@/context/PlanContext';
+import useExitIntent from '@/hooks/use-exit-intent';
+import ExitIntentPopup from '@/components/landing/ExitIntentPopup';
 
 export default function Home() {
+  const { showPopup, setShowPopup } = useExitIntent();
+
   return (
     <PlanProvider>
+      <ExitIntentPopup isOpen={showPopup} onOpenChange={setShowPopup} />
       <div className="flex flex-col items-center bg-background min-h-screen">
         <Header />
         <main className="w-full mt-[120px]">
