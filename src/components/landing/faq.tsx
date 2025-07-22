@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -9,7 +10,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { usePlan } from "@/context/PlanContext";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const faqItems = [
@@ -47,21 +47,36 @@ const faqItems = [
     }
 ];
 
+const pushinLinks: { [key: string]: string } = {
+  vitalicio: "https://pushin.app/pay/39346|qhlkY74PrEoKSvVlQ0mm1ab6JrRfp0OuFO01HaTyf022ec31?value=19.90&description=Acesso%20Vitalício",
+  mensal: "https://pushin.app/pay/39347|168K7tm1DBhQmo8PuxHX1pL3UaD2ibfbcFzw7yf569f8600f?value=14.90&description=Plano%20Mensal",
+  semanal: "https://pushin.app/pay/39349|WmV9KwWFH4pDUKyrjb9Ygg2WgEXm8ZJco5tCyLFdacafaba0?value=9.90&description=Plano%20Semanal"
+};
+
 
 export default function Faq() {
   const { selectedPlan } = usePlan();
   const { toast } = useToast();
-  const router = useRouter();
 
   const handleCtaClick = () => {
-    if (selectedPlan) {
-      router.push(`/checkout?plan=${selectedPlan}`);
-    } else {
+    if (!selectedPlan) {
       toast({
         title: "⚠️ Selecione um Plano",
         variant: "destructive",
         duration: 3000,
       });
+      return;
+    }
+    
+    const link = pushinLinks[selectedPlan];
+    if (link) {
+      window.location.href = link;
+    } else {
+        toast({
+            title: "⚠️ Link de pagamento não encontrado",
+            variant: "destructive",
+            duration: 3000,
+        });
     }
   };
 
