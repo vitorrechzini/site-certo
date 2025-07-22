@@ -22,7 +22,7 @@ import {
 
 
 const models = [
-  { src: "https://placehold.co/240x240.png", name: 'Mc Pipokinha', hint: 'woman model' },
+  { src: "https://placehold.co/240x240.png", name: 'Kinechan', hint: 'woman model' },
   { src: "https://placehold.co/240x240.png", name: 'Juliana Bonde', hint: 'woman model' },
   { src: "https://placehold.co/240x240.png", name: 'Andressa Urach', hint: 'fashion style' },
   { src: "https://placehold.co/240x240.png", name: 'Kerolay Chaves', hint: 'lifestyle' },
@@ -104,7 +104,7 @@ export default function CheckoutPage() {
             </p>
         </section>
 
-        <section className="py-8">
+        <section className="py-8 w-full overflow-hidden">
              <Carousel
                 opts={{
                     align: "start",
@@ -113,7 +113,7 @@ export default function CheckoutPage() {
                 }}
                 className="w-full"
                 >
-                <CarouselContent className="-ml-4 pl-4">
+                <CarouselContent className="-ml-1 pl-1">
                     {models.map((model, index) => (
                     <CarouselItem key={index} className="basis-auto pl-2">
                         <div className="flex flex-col items-center text-center w-[120px]">
