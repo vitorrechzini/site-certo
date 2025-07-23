@@ -24,12 +24,40 @@ const GeneratePixOutputSchema = z.object({
 });
 type GeneratePixOutput = z.infer<typeof GeneratePixOutputSchema>;
 
-// Map plan IDs to Pushin Pay payment links
-const pushinLinks: { [key: string]: string } = {
-  vitalicio: "39346|qhlkY74PrEoKSvVlQ0mm1ab6JrRfp0OuFO01HaTyf022ec31",
-  mensal: "39347|168K7tm1DBhQmo8PuxHX1pL3UaD2ibfbcFzw7yf569f8600f",
-  semanal: "39349|WmV9KwWFH4pDUKyrjb9Ygg2WgEXm8ZJco5tCyLFdacafaba0"
-};
+// Helper function to find the payment link by value
+async function findPaymentLinkByValue(value: number): Promise<string> {
+    const PUSHINPAY_API_TOKEN = process.env.PUSHINPAY_API_TOKEN;
+    if (!PUSHINPAY_API_TOKEN) {
+        throw new Error('Pushin Pay API token is not configured.');
+    }
+
+    try {
+        const response = await axios.get('https://pushin.app/api/v1/payment-links', {
+            headers: {
+                'Authorization': `Bearer ${PUSHINPAY_API_TOKEN}`,
+                'Accept': 'application/json',
+            },
+        });
+
+        const links = response.data.data;
+        // The API returns prices as strings, so we compare them as such.
+        // We format our input value to have two decimal places.
+        const formattedValue = value.toFixed(2);
+        
+        const foundLink = links.find((link: any) => parseFloat(link.value).toFixed(2) === formattedValue);
+
+        if (foundLink) {
+            // The API for generating payment requires the ID and hash separated.
+            return `${foundLink.id}|${foundLink.hash}`;
+        } else {
+            throw new Error(`No payment link found for value: ${formattedValue}`);
+        }
+    } catch (error: any) {
+        console.error('Error fetching payment links from Pushin Pay:', error.response?.data || error.message);
+        throw new Error('Failed to fetch payment links from Pushin Pay.');
+    }
+}
+
 
 const generatePixFlow = ai.defineFlow(
   {
@@ -39,20 +67,18 @@ const generatePixFlow = ai.defineFlow(
   },
   async (input) => {
     const { value, description } = input;
-    
-    let planId = 'vitalicio'; // default
-    if (value === 14.90) planId = 'mensal';
-    if (value === 9.90) planId = 'semanal';
 
-    const paymentLink = pushinLinks[planId];
-    if (!paymentLink) {
-        throw new Error('Invalid plan selected');
-    }
+    // We need to set the API token as an environment variable.
+    // I will assume it's set for now. You will need to add it to your environment.
+    // The name of the variable will be PUSHINPAY_API_TOKEN
+    process.env.PUSHINPAY_API_TOKEN = "1539|9LzQssEaYylF82OTFUaG8SDe36d9sZZDIThsYl478f73117b";
+    
+    const paymentLink = await findPaymentLinkByValue(value);
 
     try {
         const response = await axios.post(
             `https://pushin.app/api/v1/payment-links/${paymentLink}/pay`,
-            {}, // Body can be empty if value and description are in the URL
+            {}, // Body is empty
             {
                 params: {
                     value,
