@@ -15,7 +15,7 @@ const plans = [
     name: 'ACESSO VITALICIO', 
     description: 'Apenas R$1,65 por mês',
     oldPrice: 'R$99,90',
-    price: '19,98',
+    price: '19,90',
     tag: 'MAIS VENDIDO'
   },
   { 
