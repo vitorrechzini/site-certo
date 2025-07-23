@@ -109,7 +109,7 @@ export default function Plans() {
             <ArrowRight className="ml-2 h-6 w-6" />
           </Button>
           <Image
-            src="/seguro.png"
+            src="/seguro.webp"
             alt="Pagamento Seguro"
             width={300}
             height={55}
