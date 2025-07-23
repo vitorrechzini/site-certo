@@ -6,54 +6,44 @@ import Image from 'next/image';
 import { Copy, Check, Clock, Loader2, PartyPopper } from 'lucide-react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { generatePix, GeneratePixOutput } from '@/ai/flows/generate-pix-flow';
-import { db } from '@/lib/firebase';
-import { doc, onSnapshot } from 'firebase/firestore';
 
 function PixComponent() {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const price = searchParams.get('price') || '19.90';
+    
+    // Get all params from URL
+    const price = searchParams.get('price');
+    const plan = searchParams.get('plan');
+    const email = searchParams.get('email');
     const transactionId = searchParams.get('transactionId');
+
     const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutes in seconds
     const [isCopied, setIsCopied] = useState(false);
     const [pixData, setPixData] = useState<GeneratePixOutput | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [paymentStatus, setPaymentStatus] = useState('pending');
+    const [paymentStatus, setPaymentStatus] = useState('pending'); // 'pending', 'paid', 'expired'
 
-    // Firestore listener
+    // This effect will be used to detect payment confirmation via a future mechanism if needed
+    // For now, it just handles expiration.
     useEffect(() => {
-        if (!transactionId) return;
-
-        const transactionRef = doc(db, 'transactions', transactionId);
+        if (paymentStatus === 'paid') return;
         
-        const unsubscribe = onSnapshot(transactionRef, (doc) => {
-            if (doc.exists()) {
-                const data = doc.data();
-                if (data.status === 'paid') {
-                    setPaymentStatus('paid');
-                    // Stop the timer
-                    setTimeLeft(0);
-                    // Redirect or show success message after a delay
-                    setTimeout(() => {
-                        // TODO: Implement redirect to a final page or show content
-                    }, 3000);
-                }
+        const expirationTimer = setTimeout(() => {
+            if (paymentStatus === 'pending') {
+                setPaymentStatus('expired');
             }
-        }, (err) => {
-            console.error("Error listening to transaction status:", err);
-        });
+        }, timeLeft * 1000);
 
-        // Cleanup subscription on component unmount
-        return () => unsubscribe();
+        return () => clearTimeout(expirationTimer);
 
-    }, [transactionId, router]);
+    }, [paymentStatus, timeLeft, router]);
 
 
     useEffect(() => {
         async function fetchPixData() {
-            if (!transactionId) {
-                setError("ID da transação não encontrado. Volte para a página de checkout.");
+            if (!price || !email || !plan || !transactionId) {
+                setError("Informações incompletas. Por favor, volte e tente novamente.");
                 setIsLoading(false);
                 return;
             }
@@ -62,7 +52,8 @@ function PixComponent() {
             setError(null);
             try {
                 const numericPrice = parseFloat(price.replace(',', '.'));
-                let description = `Acesso OnlyFree - ID: ${transactionId}`;
+                // Construct a detailed description for the payment
+                let description = `OnlyFree - Email: ${email} - Plano: ${plan} - ID: ${transactionId}`;
                 
                 const data = await generatePix({ value: numericPrice, description });
                 setPixData(data);
@@ -75,10 +66,10 @@ function PixComponent() {
         }
 
         fetchPixData();
-    }, [price, transactionId]);
+    }, [price, plan, email, transactionId]);
 
     useEffect(() => {
-        if (timeLeft === 0 || isLoading || paymentStatus === 'paid') return;
+        if (timeLeft === 0 || isLoading || paymentStatus !== 'pending') return;
 
         const intervalId = setInterval(() => {
             setTimeLeft(prevTime => (prevTime > 0 ? prevTime - 1 : 0));
@@ -97,16 +88,10 @@ function PixComponent() {
         setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
     };
     
-    if (paymentStatus === 'paid') {
-        return (
-            <div className="flex flex-col min-h-screen bg-[#0d0d0d] text-white justify-center items-center text-center px-4">
-                <PartyPopper className="w-24 h-24 text-green-500 mb-6 animate-bounce" />
-                <h1 className="text-4xl font-bold text-white mb-4">Pagamento Confirmado!</h1>
-                <p className="text-lg text-gray-300">Seu acesso foi enviado para o seu e-mail.</p>
-                <p className="text-sm text-gray-400 mt-2">Você será redirecionado em breve...</p>
-            </div>
-        )
-    }
+    // We no longer have a "paid" status from the database.
+    // The user will receive the access by email after the webhook is processed.
+    // So we just show the PIX screen.
+    // A success message can be shown on a separate page if desired in the future.
 
     return (
         <div className="flex flex-col min-h-screen bg-[#0d0d0d] text-white">
@@ -117,7 +102,7 @@ function PixComponent() {
         <main className="flex-grow flex flex-col items-center text-center px-4 py-8">
             <h1 className="text-3xl font-bold">Quase lá...</h1>
              <p className="mt-2 text-gray-300">
-                {timeLeft > 0 ? (
+                {timeLeft > 0 && paymentStatus !== 'expired' ? (
                     <>
                     Pague seu Pix dentro de <strong className="text-white">{String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}</strong> para liberar seu acesso.
                     </>
@@ -165,6 +150,7 @@ function PixComponent() {
             
             <div className="mt-6 text-sm text-gray-400 max-w-md">
                 <p>Após copiar o código, abra seu aplicativo de pagamento onde você utiliza o Pix. Escolha a opção <strong className="text-white">Pix Copia e Cola</strong> e insira o código copiado.</p>
+                 <p className="mt-2">Você receberá o acesso no e-mail: <strong className="text-white">{email}</strong></p>
                 <div className="mt-4 flex items-center justify-center gap-2 text-green-500 font-bold">
                     <Check className="w-5 h-5" />
                     <span>COMPRA 100% SEGURA</span>

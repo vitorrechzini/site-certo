@@ -5,7 +5,6 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import Image from 'next/image';
 import { Check, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -16,8 +15,6 @@ import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import Vsl from '@/components/landing/vsl';
-import { db } from '@/lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const FormSchema = z.object({
   email: z.string().email({
@@ -50,21 +47,23 @@ export default function CheckoutPage() {
     const planPrice = planMap[plan as keyof typeof planMap] || '19.90';
     
     try {
-        const docRef = await addDoc(collection(db, "transactions"), {
-            email: data.email,
-            plan: plan,
+        // Generate a simple client-side unique ID
+        const transactionId = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+        
+        const params = new URLSearchParams({
             price: planPrice,
-            status: 'pending',
-            createdAt: serverTimestamp(),
+            plan: plan,
+            email: data.email,
+            transactionId: transactionId,
         });
         
-        router.push(`/gerar-pix?price=${planPrice}&transactionId=${docRef.id}`);
+        router.push(`/gerar-pix?${params.toString()}`);
 
     } catch (error) {
-        console.error("Erro ao criar transação no Firestore:", error);
+        console.error("Erro ao redirecionar para o PIX:", error);
         toast({
             title: "Erro ao processar sua solicitação",
-            description: "Houve um problema ao contatar nosso sistema. Por favor, tente novamente.",
+            description: "Houve um problema ao preparar a página de pagamento. Por favor, tente novamente.",
             variant: "destructive",
             duration: 3000,
         });
@@ -119,3 +118,4 @@ export default function CheckoutPage() {
     </div>
   );
 }
+
