@@ -99,12 +99,10 @@ export default function CheckoutPage() {
       toast({
         title: "Cadastro realizado com sucesso!",
         description: "Redirecionando para a página de pagamento...",
-        duration: 2000,
+        duration: 3000,
       });
       
-      setTimeout(() => {
-          router.push(`/gerar-pix?price=${planPrice}&transactionId=${transactionId}`);
-      }, 2000);
+      router.push(`/gerar-pix?price=${planPrice}&transactionId=${transactionId}`);
 
     } catch (error) {
       console.error("Erro ao salvar no Firestore:", error);
