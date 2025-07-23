@@ -16,8 +16,9 @@ import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import Vsl from '@/components/landing/vsl';
-import { db } from '@/lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+// Firestore foi removido temporariamente para depuração
+// import { db } from '@/lib/firebase';
+// import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const FormSchema = z.object({
   email: z.string().email({
@@ -49,25 +50,19 @@ export default function CheckoutPage() {
     };
     const planPrice = planMap[plan as keyof typeof planMap] || '19.90';
     
+    // Lógica do Firestore removida para teste
     try {
-        // Lógica simplificada: Apenas cria um novo documento a cada submissão.
-        const docRef = await addDoc(collection(db, "transactions"), {
-            email: data.email,
-            plan: plan,
-            price: parseFloat(planPrice.replace(',', '.')),
-            status: "pending",
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp(),
-        });
-
-        const transactionId = docRef.id;
-        router.push(`/gerar-pix?price=${planPrice}&transactionId=${transactionId}`);
+        // Simulando uma operação rápida e gerando um ID de transação falso
+        console.log("Firestore foi pulado. Redirecionando...");
+        const fakeTransactionId = `teste-${Date.now()}`;
+        
+        router.push(`/gerar-pix?price=${planPrice}&transactionId=${fakeTransactionId}`);
 
     } catch (error) {
-        console.error("Erro ao salvar no Firestore:", error);
+        console.error("Erro durante o processo de checkout (sem Firestore):", error);
         toast({
             title: "Erro ao processar sua solicitação",
-            description: "Houve um problema ao contatar nossos servidores. Por favor, tente novamente.",
+            description: "Houve um problema. Por favor, tente novamente.",
             variant: "destructive",
             duration: 3000,
         });
