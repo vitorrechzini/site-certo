@@ -17,7 +17,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { useToast } from '@/hooks/use-toast';
 import Vsl from '@/components/landing/vsl';
 import { db } from '@/lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, query, where, getDocs, writeBatch, doc } from 'firebase/firestore';
 
 
 const models = [
@@ -38,7 +38,7 @@ const FormSchema = z.object({
 export default function CheckoutPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const plan = searchParams.get('plan') || 'Nenhum plano selecionado';
+  const plan = searchParams.get('plan') || 'vitalicio';
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -51,20 +51,50 @@ export default function CheckoutPage() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true);
-    console.log("Email a ser salvo:", data.email);
-    console.log("Plano selecionado:", plan);
     const planPrice = plan === 'vitalicio' ? '19.90' : (plan === 'mensal' ? '14.90' : '9.90');
+    let transactionId = '';
 
     try {
-      const docRef = await addDoc(collection(db, "transactions"), {
-        email: data.email,
-        plan: plan,
-        price: parseFloat(planPrice.replace(',', '.')),
-        status: "pending",
-        createdAt: serverTimestamp(),
-      });
-      
-      console.log("Document written with ID: ", docRef.id);
+        const transactionsRef = collection(db, "transactions");
+        // Query for pending transactions with the same email
+        const q = query(transactionsRef, where("email", "==", data.email), where("status", "==", "pending"));
+        const querySnapshot = await getDocs(q);
+
+        const newTransactionData = {
+            email: data.email,
+            plan: plan,
+            price: parseFloat(planPrice.replace(',', '.')),
+            status: "pending",
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+        };
+
+        if (!querySnapshot.empty) {
+            // Found existing pending transaction(s)
+            const batch = writeBatch(db);
+            const existingDoc = querySnapshot.docs[0]; // Use the first one found
+            
+            // Set the transactionId to the existing document's ID
+            transactionId = existingDoc.id;
+
+            // Update the existing document with the new plan info
+            batch.update(doc(db, "transactions", transactionId), newTransactionData);
+
+            // If there are multiple pending transactions for some reason, delete the others
+            if (querySnapshot.size > 1) {
+                for (let i = 1; i < querySnapshot.size; i++) {
+                    batch.delete(querySnapshot.docs[i].ref);
+                }
+            }
+            await batch.commit();
+            console.log("Existing pending transaction updated with ID: ", transactionId);
+
+        } else {
+            // No pending transaction found, create a new one
+            const docRef = await addDoc(transactionsRef, newTransactionData);
+            transactionId = docRef.id;
+            console.log("New transaction document written with ID: ", transactionId);
+        }
 
       toast({
         title: "Cadastro realizado com sucesso!",
@@ -73,7 +103,7 @@ export default function CheckoutPage() {
       });
       
       setTimeout(() => {
-          router.push(`/gerar-pix?price=${planPrice}&transactionId=${docRef.id}`);
+          router.push(`/gerar-pix?price=${planPrice}&transactionId=${transactionId}`);
       }, 2000);
 
     } catch (error) {
