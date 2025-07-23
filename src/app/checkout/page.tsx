@@ -53,7 +53,7 @@ export default function CheckoutPage() {
     setIsLoading(true);
     console.log("Email a ser salvo:", data.email);
     console.log("Plano selecionado:", plan);
-    const planPrice = plan === 'vitalicio' ? '19.98' : (plan === 'mensal' ? '14.90' : '9.90');
+    const planPrice = plan === 'vitalicio' ? '19.90' : (plan === 'mensal' ? '14.90' : '9.90');
 
     try {
       const docRef = await addDoc(collection(db, "transactions"), {
