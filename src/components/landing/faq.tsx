@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -8,10 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button";
-import { usePlan } from "@/context/PlanContext";
-import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 
 const faqItems = [
     {
@@ -49,21 +45,12 @@ const faqItems = [
 ];
 
 export default function Faq() {
-  const { selectedPlan } = usePlan();
-  const { toast } = useToast();
-  const router = useRouter();
 
   const handleCtaClick = () => {
-    if (!selectedPlan) {
-      toast({
-        title: "⚠️ Selecione um Plano",
-        variant: "destructive",
-        duration: 3000,
-      });
-      return;
+    const plansSection = document.getElementById('plans');
+    if (plansSection) {
+      plansSection.scrollIntoView({ behavior: 'smooth' });
     }
-    
-    router.push(`/checkout?plan=${selectedPlan}`);
   };
 
   return (
@@ -89,12 +76,11 @@ export default function Faq() {
             <Button 
               size="lg" 
               className={cn(
-                "w-full max-w-md text-xl font-bold bg-red-600 hover:bg-red-700 text-white h-14 rounded-lg shadow-lg",
-                selectedPlan && "animate-scale-pulse"
+                "w-full max-w-md text-xl font-bold bg-red-600 hover:bg-red-700 text-white h-14 rounded-lg shadow-lg"
               )}
               onClick={handleCtaClick}
             >
-                Acessar Agora
+                Escolher Plano
             </Button>
         </div>
       </div>
