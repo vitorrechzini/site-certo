@@ -67,11 +67,6 @@ const generatePixFlow = ai.defineFlow(
   },
   async (input) => {
     const { value, description } = input;
-
-    // We need to set the API token as an environment variable.
-    // I will assume it's set for now. You will need to add it to your environment.
-    // The name of the variable will be PUSHINPAY_API_TOKEN
-    process.env.PUSHINPAY_API_TOKEN = "1539|9LzQssEaYylF82OTFUaG8SDe36d9sZZDIThsYl478f73117b";
     
     const paymentLink = await findPaymentLinkByValue(value);
 
