@@ -7,6 +7,7 @@ import { ArrowRight } from 'lucide-react';
 import { usePlan } from '@/context/PlanContext';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const plans = [
   { 
@@ -95,7 +96,7 @@ export default function Plans() {
             </div>
           ))}
         </div>
-        <div className="flex justify-center mt-8">
+        <div className="flex flex-col items-center mt-8 space-y-4">
           <Button 
             size="lg" 
             className={cn(
@@ -107,6 +108,14 @@ export default function Plans() {
             ASSINAR AGORA
             <ArrowRight className="ml-2 h-6 w-6" />
           </Button>
+          <Image
+            src="/seguro.png"
+            alt="Pagamento Seguro"
+            width={300}
+            height={55}
+            data-ai-hint="security badge"
+            style={{ objectFit: 'contain' }}
+          />
         </div>
       </div>
     </section>
