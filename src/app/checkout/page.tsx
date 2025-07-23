@@ -55,7 +55,6 @@ export default function CheckoutPage() {
             plan: plan,
             price: parseFloat(planPrice.replace(',', '.')),
             status: "pending",
-            createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
         };
 
@@ -63,12 +62,14 @@ export default function CheckoutPage() {
             // Use the existing transaction
             const existingDoc = querySnapshot.docs[0];
             transactionId = existingDoc.id;
-            // Update it with the new plan info
             await updateDoc(doc(db, "transactions", transactionId), newTransactionData);
             console.log("Existing pending transaction updated with ID: ", transactionId);
         } else {
             // No pending transaction, create a new one
-            const docRef = await addDoc(transactionsRef, newTransactionData);
+            const docRef = await addDoc(transactionsRef, {
+                ...newTransactionData,
+                createdAt: serverTimestamp(),
+            });
             transactionId = docRef.id;
             console.log("New transaction document written with ID: ", transactionId);
         }
@@ -83,9 +84,9 @@ export default function CheckoutPage() {
         variant: "destructive",
         duration: 3000,
       });
-    } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
+    // We don't set loading to false here because we are navigating away.
   }
 
   return (
