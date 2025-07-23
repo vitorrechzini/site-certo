@@ -43,50 +43,51 @@ export default function CheckoutPage() {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true);
     const planPrice = plan === 'vitalicio' ? '19.90' : (plan === 'mensal' ? '14.90' : '9.90');
-    let transactionId = '';
-
+    
     try {
-      const transactionsRef = collection(db, "transactions");
-      const q = query(transactionsRef, where("email", "==", data.email), where("status", "==", "pending"));
-      const querySnapshot = await getDocs(q);
+        const transactionsRef = collection(db, "transactions");
+        const q = query(transactionsRef, where("email", "==", data.email), where("status", "==", "pending"));
+        const querySnapshot = await getDocs(q);
 
-      const newTransactionData = {
-          email: data.email,
-          plan: plan,
-          price: parseFloat(planPrice.replace(',', '.')),
-          status: "pending",
-          updatedAt: serverTimestamp(),
-      };
+        let transactionId: string;
 
-      if (!querySnapshot.empty) {
-          // Use the existing transaction
-          const existingDoc = querySnapshot.docs[0];
-          transactionId = existingDoc.id;
-          await updateDoc(doc(db, "transactions", transactionId), newTransactionData);
-          console.log("Existing pending transaction updated with ID: ", transactionId);
-      } else {
-          // No pending transaction, create a new one
-          const docRef = await addDoc(transactionsRef, {
-              ...newTransactionData,
-              createdAt: serverTimestamp(),
-          });
-          transactionId = docRef.id;
-          console.log("New transaction document written with ID: ", transactionId);
-      }
-      
-      router.push(`/gerar-pix?price=${planPrice}&transactionId=${transactionId}`);
+        const newTransactionData = {
+            email: data.email,
+            plan: plan,
+            price: parseFloat(planPrice.replace(',', '.')),
+            status: "pending",
+            updatedAt: serverTimestamp(),
+        };
+
+        if (!querySnapshot.empty) {
+            // Use the existing transaction
+            const existingDoc = querySnapshot.docs[0];
+            transactionId = existingDoc.id;
+            await updateDoc(doc(db, "transactions", transactionId), newTransactionData);
+            console.log("Existing pending transaction updated with ID: ", transactionId);
+        } else {
+            // No pending transaction, create a new one
+            const docRef = await addDoc(transactionsRef, {
+                ...newTransactionData,
+                createdAt: serverTimestamp(),
+            });
+            transactionId = docRef.id;
+            console.log("New transaction document written with ID: ", transactionId);
+        }
+        
+        router.push(`/gerar-pix?price=${planPrice}&transactionId=${transactionId}`);
 
     } catch (error) {
-      console.error("Erro ao salvar no Firestore:", error);
-      toast({
-        title: "Erro ao salvar seus dados",
-        description: "Houve um problema ao contatar o servidor. Por favor, tente novamente.",
-        variant: "destructive",
-        duration: 3000,
-      });
-      setIsLoading(false);
+        console.error("Erro ao salvar no Firestore:", error);
+        toast({
+            title: "Erro ao salvar seus dados",
+            description: "Houve um problema ao contatar o servidor. Por favor, tente novamente.",
+            variant: "destructive",
+            duration: 3000,
+        });
+        setIsLoading(false);
     }
-  }
+}
 
   return (
     <div className="flex flex-col min-h-screen bg-black">
