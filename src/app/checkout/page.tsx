@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
+import Vsl from '@/components/landing/vsl';
 
 
 const models = [
@@ -64,13 +65,7 @@ export default function CheckoutPage() {
       <CheckoutHeader />
 
       <main className="flex-grow">
-        <section className="w-full bg-black flex justify-center items-center">
-            <div className="w-full aspect-video relative max-h-[300px]">
-                <div className="w-full h-full flex items-center justify-center text-gray-500 text-lg bg-black">
-                    VSL Vídeo Aqui (embed ou imagem)
-                </div>
-            </div>
-        </section>
+        <Vsl />
 
         <section className="py-8 px-4 text-white text-center">
             <h2 className="text-2xl font-bold mb-6">Cadastro de Usuário</h2>
