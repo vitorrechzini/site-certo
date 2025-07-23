@@ -16,9 +16,8 @@ import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import Vsl from '@/components/landing/vsl';
-// Firestore foi removido temporariamente para depuração
-// import { db } from '@/lib/firebase';
-// import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const FormSchema = z.object({
   email: z.string().email({
@@ -50,19 +49,22 @@ export default function CheckoutPage() {
     };
     const planPrice = planMap[plan as keyof typeof planMap] || '19.90';
     
-    // Lógica do Firestore removida para teste
     try {
-        // Simulando uma operação rápida e gerando um ID de transação falso
-        console.log("Firestore foi pulado. Redirecionando...");
-        const fakeTransactionId = `teste-${Date.now()}`;
+        const docRef = await addDoc(collection(db, "transactions"), {
+            email: data.email,
+            plan: plan,
+            price: planPrice,
+            status: 'pending',
+            createdAt: serverTimestamp(),
+        });
         
-        router.push(`/gerar-pix?price=${planPrice}&transactionId=${fakeTransactionId}`);
+        router.push(`/gerar-pix?price=${planPrice}&transactionId=${docRef.id}`);
 
     } catch (error) {
-        console.error("Erro durante o processo de checkout (sem Firestore):", error);
+        console.error("Erro ao criar transação no Firestore:", error);
         toast({
             title: "Erro ao processar sua solicitação",
-            description: "Houve um problema. Por favor, tente novamente.",
+            description: "Houve um problema ao contatar nosso sistema. Por favor, tente novamente.",
             variant: "destructive",
             duration: 3000,
         });
