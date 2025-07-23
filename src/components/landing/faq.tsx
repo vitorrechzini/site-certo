@@ -47,9 +47,9 @@ const faqItems = [
 export default function Faq() {
 
   const handleCtaClick = () => {
-    const plansSection = document.getElementById('plans');
-    if (plansSection) {
-      plansSection.scrollIntoView({ behavior: 'smooth' });
+    const ctaSection = document.getElementById('cta');
+    if (ctaSection) {
+      ctaSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
