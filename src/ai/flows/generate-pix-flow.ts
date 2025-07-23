@@ -16,13 +16,13 @@ const GeneratePixInputSchema = z.object({
   value: z.number().describe('The value of the PIX payment.'),
   description: z.string().describe('The description of the product or service.'),
 });
-export type GeneratePixInput = z.infer<typeof GeneratePixInputSchema>;
+type GeneratePixInput = z.infer<typeof GeneratePixInputSchema>;
 
 const GeneratePixOutputSchema = z.object({
   qr_code_image: z.string().describe('The base64 encoded QR code image.'),
   qr_code_text: z.string().describe('The PIX copy-and-paste code.'),
 });
-export type GeneratePixOutput = z.infer<typeof GeneratePixOutputSchema>;
+type GeneratePixOutput = z.infer<typeof GeneratePixOutputSchema>;
 
 // Map plan IDs to Pushin Pay payment links
 const pushinLinks: { [key: string]: string } = {
@@ -52,11 +52,12 @@ const generatePixFlow = ai.defineFlow(
     try {
         const response = await axios.post(
             `https://pushin.app/api/v1/payment-links/${paymentLink}/pay`,
+            {}, // Body can be empty if value and description are in the URL
             {
-                value,
-                description,
-            },
-            {
+                params: {
+                    value,
+                    description,
+                },
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
