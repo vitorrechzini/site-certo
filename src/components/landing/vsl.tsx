@@ -11,7 +11,7 @@ export default function Vsl() {
           muted
           playsInline
           controlsList="nodownload"
-          className="w-full h-full rounded-lg object-contain"
+          className="w-full h-full object-cover"
         />
       </div>
     </section>
