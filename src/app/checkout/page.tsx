@@ -61,8 +61,6 @@ export default function CheckoutPage() {
         });
 
         const transactionId = docRef.id;
-        console.log("New transaction document written with ID: ", transactionId);
-        
         router.push(`/gerar-pix?price=${planPrice}&transactionId=${transactionId}`);
 
     } catch (error) {
