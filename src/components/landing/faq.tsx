@@ -54,10 +54,10 @@ export default function Faq() {
   };
 
   return (
-    <section className="w-full bg-background py-12 px-4">
-      <div className="max-w-xl mx-auto">
+    <section className="w-full bg-background py-12">
+      <div className="w-full px-4">
         <h3 className="text-3xl font-bold text-center mb-8 font-headline text-white">Perguntas Frequentes</h3>
-        <Accordion type="single" collapsible className="w-full">
+        <Accordion type="single" collapsible className="w-full max-w-4xl mx-auto">
           {faqItems.map((item, index) => (
              <AccordionItem value={`item-${index}`} key={index} className="border-b border-gray-700">
                 <AccordionTrigger className="text-left font-semibold text-white hover:no-underline py-4 text-base justify-start">
