@@ -32,7 +32,9 @@ export async function POST(req: NextRequest) {
 
     if (!transactionSnap.exists()) {
         console.error(`Transação com ID ${transactionId} não encontrada no Firestore.`);
-        return NextResponse.json({ status: 'error', message: 'Transação não encontrada' }, { status: 404 });
+        // Mesmo que não encontremos, retornamos 200 para a PushinPay não ficar reenviando.
+        // Pode ter sido processada e apagada anteriormente.
+        return NextResponse.json({ status: 'success', message: 'Transação já processada ou não encontrada' }, { status: 200 });
     }
     
     // Verificamos o status do pagamento.
@@ -41,6 +43,7 @@ export async function POST(req: NextRequest) {
 
     if (paymentStatus === 'paid' || paymentStatus === 'approved') {
         // 1. Atualiza o status para "paid"
+        // Este passo é importante para a página do cliente (gerar-pix) saber que o pagamento foi confirmado.
         await updateDoc(transactionRef, {
             status: 'paid',
             updatedAt: new Date(),
@@ -48,9 +51,12 @@ export async function POST(req: NextRequest) {
         });
         console.log(`Transação ${transactionId} atualizada para "pago".`);
 
-        // 2. Apaga o documento do Firestore após a confirmação
-        await deleteDoc(transactionRef);
-        console.log(`Transação ${transactionId} finalizada e removida do banco de dados.`);
+        // 2. Apaga o documento do Firestore após a confirmação para garantir a privacidade.
+        // Damos um pequeno atraso para garantir que a página do cliente possa detectar a mudança de status.
+        setTimeout(async () => {
+            await deleteDoc(transactionRef);
+            console.log(`Transação ${transactionId} finalizada e removida do banco de dados.`);
+        }, 5000); // Atraso de 5 segundos
 
     } else {
         console.log(`Webhook recebido para transação ${transactionId} com status não pago: ${paymentStatus}`);
