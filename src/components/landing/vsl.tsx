@@ -12,6 +12,7 @@ export default function Vsl() {
           playsInline
           controlsList="nodownload"
           className="w-full h-full object-cover"
+          poster="/foto1.jpeg"
         />
       </div>
     </section>

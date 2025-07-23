@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -24,6 +25,7 @@ export default function Header() {
           width={150}
           height={40}
           style={{ objectFit: 'contain' }}
+          priority
         />
       </div>
       <div className="w-full bg-accent text-center py-2 flex items-center justify-center h-10">

@@ -19,15 +19,6 @@ import Vsl from '@/components/landing/vsl';
 import { db } from '@/lib/firebase';
 import { collection, addDoc, serverTimestamp, query, where, getDocs, writeBatch, doc } from 'firebase/firestore';
 
-
-const models = [
-  { src: "/Checkout1.webp", name: 'Mc Pipokinha', hint: 'woman model' },
-  { src: "/Checkout2.webp", name: 'Juliana Bonde', hint: 'woman model' },
-  { src: "/Checkout3.webp", name: 'Andressa Urach', hint: 'fashion style' },
-  { src: "/Checkout4.webp", name: 'Kerolay Chaves', hint: 'lifestyle' },
-  { src: "/Checkout5.webp", name: 'Cibelly Ferreira', hint: 'woman fashion' },
-];
-
 const FormSchema = z.object({
   email: z.string().email({
     message: "Por favor, insira um endereço de e-mail válido.",
@@ -99,7 +90,7 @@ export default function CheckoutPage() {
       toast({
         title: "Cadastro realizado com sucesso!",
         description: "Redirecionando para a página de pagamento...",
-        duration: 3000,
+        duration: 2000,
       });
       
       router.push(`/gerar-pix?price=${planPrice}&transactionId=${transactionId}`);
@@ -157,26 +148,6 @@ export default function CheckoutPage() {
                 Seu e-mail está 100% seguro, usaremos apenas para identificar seu cadastro e processar a assinatura.
             </p>
         </section>
-
-        <section className="py-8 px-4 w-full">
-            <div className="grid grid-cols-5 gap-2">
-                {models.map((model, index) => (
-                    <div key={index} className="group relative w-full aspect-square rounded-lg overflow-hidden">
-                        <Image
-                            src={model.src}
-                            alt={model.name}
-                            fill
-                            style={{objectFit: "cover"}}
-                            data-ai-hint={model.hint}
-                            className="rounded-lg transition-transform duration-300 group-hover:scale-105"
-                        />
-                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-300 group-hover:opacity-20"></div>
-                        <p className="absolute bottom-2 left-2 text-white font-bold text-xs">{model.name}</p>
-                    </div>
-                ))}
-            </div>
-        </section>
-
       </main>
       
       <CheckoutFooter />
