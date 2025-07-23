@@ -2,11 +2,12 @@
 "use client";
 
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Image from 'next/image';
-import { Check } from 'lucide-react';
+import { Check, Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
 import CheckoutHeader from '@/components/checkout/header';
 import CheckoutFooter from '@/components/checkout/footer';
@@ -15,6 +16,8 @@ import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import Vsl from '@/components/landing/vsl';
+import { db } from '@/lib/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 
 const models = [
@@ -37,6 +40,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const plan = searchParams.get('plan') || 'Nenhum plano selecionado';
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -45,36 +49,43 @@ export default function CheckoutPage() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    setIsLoading(true);
     console.log("Email a ser salvo:", data.email);
     console.log("Plano selecionado:", plan);
+    const planPrice = plan === 'vitalicio' ? '19.90' : (plan === 'mensal' ? '14.90' : '9.90');
 
-    // Salvar no localStorage
     try {
-      localStorage.setItem('userEmail', data.email);
-      localStorage.setItem('selectedPlan', plan);
+      const docRef = await addDoc(collection(db, "transactions"), {
+        email: data.email,
+        plan: plan,
+        price: parseFloat(planPrice.replace(',', '.')),
+        status: "pending",
+        createdAt: serverTimestamp(),
+      });
+      
+      console.log("Document written with ID: ", docRef.id);
+
+      toast({
+        title: "Cadastro realizado com sucesso!",
+        description: "Redirecionando para a página de pagamento...",
+        duration: 2000,
+      });
+      
+      setTimeout(() => {
+          router.push(`/gerar-pix?price=${planPrice}&transactionId=${docRef.id}`);
+      }, 2000);
+
     } catch (error) {
-      console.error("Erro ao salvar no localStorage:", error);
+      console.error("Erro ao salvar no Firestore:", error);
       toast({
         title: "Erro ao salvar seus dados",
-        description: "Por favor, tente novamente.",
+        description: "Houve um problema ao contatar o servidor. Por favor, tente novamente.",
         variant: "destructive",
         duration: 3000,
       });
-      return;
+      setIsLoading(false);
     }
-
-
-    toast({
-      title: "Cadastro realizado com sucesso!",
-      description: "Redirecionando para a página de pagamento...",
-      duration: 2000,
-    });
-    
-    setTimeout(() => {
-        const planPrice = plan === 'vitalicio' ? '19.90' : (plan === 'mensal' ? '14.90' : '9.90');
-        router.push(`/gerar-pix?price=${planPrice}`);
-    }, 2000);
   }
 
   return (
@@ -104,8 +115,13 @@ export default function CheckoutPage() {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" size="lg" className="w-full bg-green-500 hover:bg-green-600 text-white font-bold text-lg h-14">
-                        <Check className="mr-2" /> CADASTRAR E GERAR PIX
+                    <Button type="submit" size="lg" className="w-full bg-green-500 hover:bg-green-600 text-white font-bold text-lg h-14" disabled={isLoading}>
+                        {isLoading ? (
+                            <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+                        ) : (
+                            <Check className="mr-2" />
+                        )}
+                        {isLoading ? 'PROCESSANDO...' : 'CADASTRAR E GERAR PIX'}
                     </Button>
                 </form>
             </Form>

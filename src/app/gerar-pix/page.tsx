@@ -10,6 +10,7 @@ import { generatePix, GeneratePixOutput } from '@/ai/flows/generate-pix-flow';
 function PixComponent() {
     const searchParams = useSearchParams();
     const price = searchParams.get('price') || '19.90';
+    const transactionId = searchParams.get('transactionId');
     const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutes in seconds
     const [isCopied, setIsCopied] = useState(false);
     const [pixData, setPixData] = useState<GeneratePixOutput | null>(null);
@@ -18,14 +19,18 @@ function PixComponent() {
 
     useEffect(() => {
         async function fetchPixData() {
+            if (!transactionId) {
+                setError("ID da transação não encontrado. Volte para a página de checkout.");
+                setIsLoading(false);
+                return;
+            }
+
             setIsLoading(true);
             setError(null);
             try {
                 const numericPrice = parseFloat(price.replace(',', '.'));
-                let description = 'Acesso Vitalício';
-                if (numericPrice === 14.90) description = 'Plano Mensal';
-                if (numericPrice === 9.90) description = 'Plano Semanal';
-
+                let description = `Acesso OnlyFree - ID: ${transactionId}`;
+                
                 const data = await generatePix({ value: numericPrice, description });
                 setPixData(data);
             } catch (err: any) {
@@ -37,7 +42,7 @@ function PixComponent() {
         }
 
         fetchPixData();
-    }, [price]);
+    }, [price, transactionId]);
 
     useEffect(() => {
         if (timeLeft === 0 || !isLoading) return;
