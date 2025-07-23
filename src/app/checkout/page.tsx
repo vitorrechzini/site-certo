@@ -42,7 +42,12 @@ export default function CheckoutPage() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true);
-    const planPrice = plan === 'vitalicio' ? '19.90' : (plan === 'mensal' ? '14.90' : '9.90');
+    const planMap = {
+      'vitalicio': '19.90',
+      'mensal': '14.90',
+      'semanal': '09.90'
+    };
+    const planPrice = planMap[plan as keyof typeof planMap] || '19.90';
     
     try {
         const transactionsRef = collection(db, "transactions");
@@ -60,10 +65,11 @@ export default function CheckoutPage() {
         };
 
         if (!querySnapshot.empty) {
-            // Use the existing transaction
+            // Use and update the existing pending transaction
             const existingDoc = querySnapshot.docs[0];
             transactionId = existingDoc.id;
-            await updateDoc(doc(db, "transactions", transactionId), newTransactionData);
+            const docRef = doc(db, "transactions", transactionId);
+            await updateDoc(docRef, newTransactionData);
             console.log("Existing pending transaction updated with ID: ", transactionId);
         } else {
             // No pending transaction, create a new one
