@@ -46,33 +46,33 @@ export default function CheckoutPage() {
     let transactionId = '';
 
     try {
-        const transactionsRef = collection(db, "transactions");
-        const q = query(transactionsRef, where("email", "==", data.email), where("status", "==", "pending"));
-        const querySnapshot = await getDocs(q);
+      const transactionsRef = collection(db, "transactions");
+      const q = query(transactionsRef, where("email", "==", data.email), where("status", "==", "pending"));
+      const querySnapshot = await getDocs(q);
 
-        const newTransactionData = {
-            email: data.email,
-            plan: plan,
-            price: parseFloat(planPrice.replace(',', '.')),
-            status: "pending",
-            updatedAt: serverTimestamp(),
-        };
+      const newTransactionData = {
+          email: data.email,
+          plan: plan,
+          price: parseFloat(planPrice.replace(',', '.')),
+          status: "pending",
+          updatedAt: serverTimestamp(),
+      };
 
-        if (!querySnapshot.empty) {
-            // Use the existing transaction
-            const existingDoc = querySnapshot.docs[0];
-            transactionId = existingDoc.id;
-            await updateDoc(doc(db, "transactions", transactionId), newTransactionData);
-            console.log("Existing pending transaction updated with ID: ", transactionId);
-        } else {
-            // No pending transaction, create a new one
-            const docRef = await addDoc(transactionsRef, {
-                ...newTransactionData,
-                createdAt: serverTimestamp(),
-            });
-            transactionId = docRef.id;
-            console.log("New transaction document written with ID: ", transactionId);
-        }
+      if (!querySnapshot.empty) {
+          // Use the existing transaction
+          const existingDoc = querySnapshot.docs[0];
+          transactionId = existingDoc.id;
+          await updateDoc(doc(db, "transactions", transactionId), newTransactionData);
+          console.log("Existing pending transaction updated with ID: ", transactionId);
+      } else {
+          // No pending transaction, create a new one
+          const docRef = await addDoc(transactionsRef, {
+              ...newTransactionData,
+              createdAt: serverTimestamp(),
+          });
+          transactionId = docRef.id;
+          console.log("New transaction document written with ID: ", transactionId);
+      }
       
       router.push(`/gerar-pix?price=${planPrice}&transactionId=${transactionId}`);
 
@@ -86,7 +86,6 @@ export default function CheckoutPage() {
       });
       setIsLoading(false);
     }
-    // We don't set loading to false here because we are navigating away.
   }
 
   return (
