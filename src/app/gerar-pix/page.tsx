@@ -3,12 +3,15 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
-import { Copy, Check, Clock, Loader2 } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
+import { Copy, Check, Clock, Loader2, PartyPopper } from 'lucide-react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { generatePix, GeneratePixOutput } from '@/ai/flows/generate-pix-flow';
+import { db } from '@/lib/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 function PixComponent() {
     const searchParams = useSearchParams();
+    const router = useRouter();
     const price = searchParams.get('price') || '19.90';
     const transactionId = searchParams.get('transactionId');
     const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutes in seconds
@@ -16,6 +19,36 @@ function PixComponent() {
     const [pixData, setPixData] = useState<GeneratePixOutput | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [paymentStatus, setPaymentStatus] = useState('pending');
+
+    // Firestore listener
+    useEffect(() => {
+        if (!transactionId) return;
+
+        const transactionRef = doc(db, 'transactions', transactionId);
+        
+        const unsubscribe = onSnapshot(transactionRef, (doc) => {
+            if (doc.exists()) {
+                const data = doc.data();
+                if (data.status === 'paid') {
+                    setPaymentStatus('paid');
+                    // Stop the timer
+                    setTimeLeft(0);
+                    // Redirect or show success message after a delay
+                    setTimeout(() => {
+                        // TODO: Implement redirect to a final page or show content
+                    }, 3000);
+                }
+            }
+        }, (err) => {
+            console.error("Error listening to transaction status:", err);
+        });
+
+        // Cleanup subscription on component unmount
+        return () => unsubscribe();
+
+    }, [transactionId, router]);
+
 
     useEffect(() => {
         async function fetchPixData() {
@@ -45,14 +78,14 @@ function PixComponent() {
     }, [price, transactionId]);
 
     useEffect(() => {
-        if (timeLeft === 0 || !isLoading) return;
+        if (timeLeft === 0 || isLoading || paymentStatus === 'paid') return;
 
         const intervalId = setInterval(() => {
             setTimeLeft(prevTime => (prevTime > 0 ? prevTime - 1 : 0));
         }, 1000);
 
         return () => clearInterval(intervalId);
-    }, [timeLeft, isLoading]);
+    }, [timeLeft, isLoading, paymentStatus]);
 
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
@@ -63,6 +96,17 @@ function PixComponent() {
         setIsCopied(true);
         setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
     };
+    
+    if (paymentStatus === 'paid') {
+        return (
+            <div className="flex flex-col min-h-screen bg-[#0d0d0d] text-white justify-center items-center text-center px-4">
+                <PartyPopper className="w-24 h-24 text-green-500 mb-6 animate-bounce" />
+                <h1 className="text-4xl font-bold text-white mb-4">Pagamento Confirmado!</h1>
+                <p className="text-lg text-gray-300">Seu acesso foi enviado para o seu e-mail.</p>
+                <p className="text-sm text-gray-400 mt-2">Você será redirecionado em breve...</p>
+            </div>
+        )
+    }
 
     return (
         <div className="flex flex-col min-h-screen bg-[#0d0d0d] text-white">
