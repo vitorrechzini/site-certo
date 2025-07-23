@@ -17,7 +17,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { useToast } from '@/hooks/use-toast';
 import Vsl from '@/components/landing/vsl';
 import { db } from '@/lib/firebase';
-import { collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const FormSchema = z.object({
   email: z.string().email({
@@ -50,44 +50,26 @@ export default function CheckoutPage() {
     const planPrice = planMap[plan as keyof typeof planMap] || '19.90';
     
     try {
-        const transactionsRef = collection(db, "transactions");
-        const q = query(transactionsRef, where("email", "==", data.email), where("status", "==", "pending"));
-        const querySnapshot = await getDocs(q);
-
-        let transactionId: string;
-
-        const newTransactionData = {
+        // Lógica simplificada: Apenas cria um novo documento a cada submissão.
+        const docRef = await addDoc(collection(db, "transactions"), {
             email: data.email,
             plan: plan,
             price: parseFloat(planPrice.replace(',', '.')),
             status: "pending",
+            createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
-        };
+        });
 
-        if (!querySnapshot.empty) {
-            // Use and update the existing pending transaction
-            const existingDoc = querySnapshot.docs[0];
-            transactionId = existingDoc.id;
-            const docRef = doc(db, "transactions", transactionId);
-            await updateDoc(docRef, newTransactionData);
-            console.log("Existing pending transaction updated with ID: ", transactionId);
-        } else {
-            // No pending transaction, create a new one
-            const docRef = await addDoc(transactionsRef, {
-                ...newTransactionData,
-                createdAt: serverTimestamp(),
-            });
-            transactionId = docRef.id;
-            console.log("New transaction document written with ID: ", transactionId);
-        }
+        const transactionId = docRef.id;
+        console.log("New transaction document written with ID: ", transactionId);
         
         router.push(`/gerar-pix?price=${planPrice}&transactionId=${transactionId}`);
 
     } catch (error) {
         console.error("Erro ao salvar no Firestore:", error);
         toast({
-            title: "Erro ao salvar seus dados",
-            description: "Houve um problema ao contatar o servidor. Por favor, tente novamente.",
+            title: "Erro ao processar sua solicitação",
+            description: "Houve um problema ao contatar nossos servidores. Por favor, tente novamente.",
             variant: "destructive",
             duration: 3000,
         });
