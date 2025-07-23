@@ -48,6 +48,23 @@ export default function CheckoutPage() {
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log("Email a ser salvo:", data.email);
     console.log("Plano selecionado:", plan);
+
+    // Salvar no localStorage
+    try {
+      localStorage.setItem('userEmail', data.email);
+      localStorage.setItem('selectedPlan', plan);
+    } catch (error) {
+      console.error("Erro ao salvar no localStorage:", error);
+      toast({
+        title: "Erro ao salvar seus dados",
+        description: "Por favor, tente novamente.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+
     toast({
       title: "Cadastro realizado com sucesso!",
       description: "Redirecionando para a página de pagamento...",
