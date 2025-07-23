@@ -17,7 +17,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { useToast } from '@/hooks/use-toast';
 import Vsl from '@/components/landing/vsl';
 import { db } from '@/lib/firebase';
-import { collection, addDoc, serverTimestamp, query, where, getDocs, writeBatch, doc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc } from 'firebase/firestore';
 
 const FormSchema = z.object({
   email: z.string().email({
@@ -47,7 +47,6 @@ export default function CheckoutPage() {
 
     try {
         const transactionsRef = collection(db, "transactions");
-        // Query for pending transactions with the same email
         const q = query(transactionsRef, where("email", "==", data.email), where("status", "==", "pending"));
         const querySnapshot = await getDocs(q);
 
@@ -61,37 +60,18 @@ export default function CheckoutPage() {
         };
 
         if (!querySnapshot.empty) {
-            // Found existing pending transaction(s)
-            const batch = writeBatch(db);
-            const existingDoc = querySnapshot.docs[0]; // Use the first one found
-            
-            // Set the transactionId to the existing document's ID
+            // Use the existing transaction
+            const existingDoc = querySnapshot.docs[0];
             transactionId = existingDoc.id;
-
-            // Update the existing document with the new plan info
-            batch.update(doc(db, "transactions", transactionId), newTransactionData);
-
-            // If there are multiple pending transactions for some reason, delete the others
-            if (querySnapshot.size > 1) {
-                for (let i = 1; i < querySnapshot.size; i++) {
-                    batch.delete(querySnapshot.docs[i].ref);
-                }
-            }
-            await batch.commit();
+            // Update it with the new plan info
+            await updateDoc(doc(db, "transactions", transactionId), newTransactionData);
             console.log("Existing pending transaction updated with ID: ", transactionId);
-
         } else {
-            // No pending transaction found, create a new one
+            // No pending transaction, create a new one
             const docRef = await addDoc(transactionsRef, newTransactionData);
             transactionId = docRef.id;
             console.log("New transaction document written with ID: ", transactionId);
         }
-
-      toast({
-        title: "Cadastro realizado com sucesso!",
-        description: "Redirecionando para a página de pagamento...",
-        duration: 2000,
-      });
       
       router.push(`/gerar-pix?price=${planPrice}&transactionId=${transactionId}`);
 
@@ -103,7 +83,8 @@ export default function CheckoutPage() {
         variant: "destructive",
         duration: 3000,
       });
-      setIsLoading(false);
+    } finally {
+        setIsLoading(false);
     }
   }
 
