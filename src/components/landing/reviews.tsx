@@ -6,7 +6,7 @@ import { Star, StarHalf } from 'lucide-react';
 const reviews = [
   { name: 'Pedro Souza', image: '/__tmp__/image.jpeg', rating: 5, comment: 'meu deus, é um vídeo melhor que o outro', hint: 'man portrait'},
   { name: 'Carlos Álvez', image: '', rating: 5, comment: 'se é loco, nunca mais Xvideos..', hint: 'man portrait'},
-  { name: 'Lucas Rodrigues', image: '', rating: 4, comment: 'Essa melody é muito safada pqp, melhor grupo que ja entrei', hint: 'man smiling'},
+  { name: 'Lucas Rodrigues', image: '', rating: 4, comment: 'Essa melody é muito safada pqp, melhor grupo que ja entrei, só queria que tivesse mais vagas, quase que perdi!', hint: 'man smiling'},
   { name: 'Marcos Ferreira', image: '', rating: 5, comment: 'Muito barato pela qualidade que entrega, chegou muito rápido e as mina são top!', hint: 'man glasses'},
 ];
 
