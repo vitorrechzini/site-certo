@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -34,7 +35,7 @@ export default function Footer() {
               />
             </div>
             <p className="text-xs text-gray-400">
-                Todos os Direitos Reservados 2025 - OnlyFree
+                Todos os Direitos Reservados 2025 - <Link href="/" className="text-blue-500 hover:underline">OnlyFree</Link>
             </p>
             <Link href="/remocao" className="text-xs text-gray-400 underline mt-2 inline-block">
                 Política de remoção de conteúdo
